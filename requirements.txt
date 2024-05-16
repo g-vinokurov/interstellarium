@@ -1,3 +1,5 @@
 pip==24.0
 setuptools==69.5.1
 wheel==0.43.0
+python-dotenv==1.0.1
+Flask==3.0.3
