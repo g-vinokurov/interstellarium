@@ -9,23 +9,38 @@
 {% endblock %}
 
 {% block content %}
-    <form id="login-form" action="" method="post" autocomplete=off>
-        {{ form.csrf_token() }}
-        <br>
-        <div class="row">
-            <div class="col-12">
-                {{ form.email(class="form-control", type="email", placeholder="E-mail") }}
+    <div class="interstellarium-container">
+        <div class="interstellarium-login">
+            <div class="interstellarium-login-picture-wrapper">
+                <img src="{{ url_for('static', filename='img/rocket.png')}}" class="interstellarium-login-picture" alt="Interstellarium">
+            </div>
+            <div class="interstellarium-login-form-wrapper">
+                <div class="interstellarium-login-form">
+                    <form id="login-form" action="" method="post" autocomplete=off>
+                        {{ form.csrf_token() }}
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form.email(class="form-control", type="email", placeholder="E-mail") }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form.password(class="form-control", type="password", placeholder="Пароль") }}
+                            </div>
+                        </div>
+                        <br>
+                        {% if message %}
+                        <div class="font-interstellarium text-danger text-center">{{ message }}</div>
+                        <br>
+                        {% endif %}
+                        <div class="d-flex justify-content-center">
+                            {{ form.submit(type="submit", class="btn btn-interstellarium rounded-pill fw-bold px-3", id="btn-send-feedback", value="Войти в систему") }}
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col-12">
-                {{ form.password(class="form-control", type="password", placeholder="Пароль") }}
-            </div>
-        </div>
-        <br>
-        <div class="d-flex justify-content-center">
-            {{ form.submit(type="submit", class="btn btn-dark rounded-pill fw-bold px-3", id="btn-send-feedback", value="Отправить") }}
-        </div>
-    </form>
+    </div>
 {% endblock %}

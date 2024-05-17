@@ -1,0 +1,104 @@
+:root {
+    --interstellarium-font-family: 'Nunito';
+    --interstellarium-goto-dashboard-link-font-size: 3vw;
+}
+
+.interstellarium-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.interstellarium-login {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: column;
+    /* border: 1px solid var(--interstellarium-light-grey);
+    border-radius: 4rem;*/
+}
+
+.interstellarium-login-picture-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding: 2rem;
+}
+
+.interstellarium-login-picture {
+    width: 60%;
+}
+
+.interstellarium-login-form-wrapper {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.interstellarium-login-form {
+    width: 100%;
+}
+
+.btn-interstellarium {
+    background: var(--interstellarium-gradient);
+    color: #FFFFFF;
+    font-family: var(--interstellarium-font-family), sans-serif;
+}
+
+.btn-interstellarium,
+.btn-interstellarium:hover,
+.btn-interstellarium:active,
+.btn-interstellarium:focus-visible {
+    background: var(--interstellarium-gradient);
+    color: #FFFFFF !important;
+    font-family: var(--interstellarium-font-family), sans-serif;
+    outline: none;
+}
+
+@media (min-width: 576px) {
+    :root {
+    }
+
+    .interstellarium-login {
+        width: 75%;
+    }
+}
+
+@media (min-width: 768px) {
+    :root {
+    }
+
+    .interstellarium-login {
+        flex-direction: row;
+        margin: 2rem;
+        padding: 2rem;
+    }
+
+    .interstellarium-login-picture-wrapper {
+        flex-basis: 50%;
+        align-items: center;
+    }
+
+    .interstellarium-login-picture {
+        width: 100%;
+        max-width: 40vh;
+    }
+
+    .interstellarium-login-form-wrapper {
+        flex-basis: 50%;
+    }
+}
+
+@media (min-width: 992px) {
+    :root {
+    }
+}
+
+@media (min-width: 1200px) {
+    :root {
+    }
+}

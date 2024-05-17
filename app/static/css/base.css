@@ -3,11 +3,16 @@
     --interstellarium-secondary: #021B79;
     --interstellarium-dark: #21232B;
     --interstellarium-tertiary: #495057;
+    --interstellarium-light-grey: #AAA;
     --interstellarium-gradient: linear-gradient(135deg, #0575E6 40%, #021B79 110%);
 }
 
 html, body {
     height: 100%;
+}
+
+.font-interstellarium {
+    font-family: var(--interstellarium-font-family), sans-serif;
 }
 
 @media (min-width: 576px) {
