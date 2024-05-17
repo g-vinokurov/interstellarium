@@ -27,7 +27,12 @@ login_manager.init_app(app)
 from . import db as _db
 from . import models
 
-db = _db.Database()
+database = _db.Database()
+
+from . import migrator as _migrator
+
+migrator = _migrator.Migrator()
+migrator.init()
 
 from . import forms
 from . import views

@@ -11,7 +11,7 @@ from flask_login import current_user
 from flask_login import logout_user
 
 from app import app
-from app import db
+from app import database as db
 
 from app import login_manager
 
