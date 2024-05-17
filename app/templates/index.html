@@ -11,3 +11,16 @@
 {% block styles %}
     <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
+
+{% block content %}
+    <div class="interstellarium-container">
+        <div class="interstellarium-index-hero">
+            <div class="interstellarium-logo">INTERSTELLARIUM</div>
+            <div class="interstellarium-goto-dashboard">
+                <a href="{{ url_for('login') }}" class="interstellarium-goto-dashboard-link">
+                    АВТОРИЗОВАТЬСЯ В СИСТЕМЕ
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
