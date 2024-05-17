@@ -3,6 +3,7 @@
 from flask import Flask
 
 from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager
 
 import config
 
@@ -17,7 +18,17 @@ app.config['SECRET_KEY'] = config.FLASK_SECRET_KEY
 csrf_protection = CSRFProtect()
 csrf_protection.init_app(app)
 
-from . import db
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
+login_manager.init_app(app)
+
+from . import db as _db
+from . import models
+
+db = _db.Database()
+
 from . import forms
 from . import views
 

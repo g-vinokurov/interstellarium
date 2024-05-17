@@ -10,6 +10,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Data source name url for db connection
 DB_URL = env.get('DB_URL', '')
+DB_ECHO = (env.get('DB_ECHO', 'False') == 'True')
 
 # Flask application config
 FLASK_SECRET_KEY = env.get('FLASK_SECRET_KEY', 'secret-key')

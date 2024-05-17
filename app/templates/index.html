@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+    <meta name="description" content="Interstellarium - разработка космических проектов">
+{% endblock %}
+
+{% block title %}
+    Interstellarium
+{% endblock %}
+
+{% block styles %}
+    <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
