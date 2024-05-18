@@ -3,6 +3,7 @@
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
+from sqlalchemy import Boolean
 
 from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy import ForeignKeyConstraint
@@ -23,6 +24,7 @@ class User(Base, UserMixin):
     id = Column(Integer, autoincrement=True)
     email = Column(String(255), nullable=False)
     password_hash = Column(String(512), nullable=False)
+    is_superuser = Column(Boolean, nullable=False, default=False)
 
     name = Column(String(255), nullable=True)
 
