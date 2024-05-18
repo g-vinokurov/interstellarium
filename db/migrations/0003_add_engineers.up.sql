@@ -1,4 +1,9 @@
-create table if not exists engineers (
-    id      serial primary key,
-    user_id integer not null references users (id) on delete cascade
+CREATE TABLE IF NOT EXISTS engineers (
+	id      SERIAL NOT NULL,
+	user_id INTEGER NOT NULL, 
+	CONSTRAINT engineer_pk PRIMARY KEY (id), 
+	CONSTRAINT engineer_user_fk FOREIGN KEY(user_id)
+	    REFERENCES users (id)
+	    ON DELETE CASCADE
+	    ON UPDATE CASCADE
 );

@@ -1,1 +1,1 @@
-drop table if exists laboratorians;
+DROP TABLE IF EXISTS laboratorians;

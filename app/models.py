@@ -29,8 +29,8 @@ class User(Base, UserMixin):
     name = Column(String(255), nullable=True)
 
     __table_args__ = (
-        PrimaryKeyConstraint('id'),
-        UniqueConstraint('email'),
+        PrimaryKeyConstraint('id', name='user_pk'),
+        UniqueConstraint('email', name='user_email_unique'),
     )
 
     def set_password(self, password):
@@ -47,8 +47,14 @@ class Designer(Base):
     user_id = Column(Integer, nullable=False)
 
     __table_args__ = (
-        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-        PrimaryKeyConstraint('id')
+        ForeignKeyConstraint(
+            ['user_id'],
+            ['users.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='designer_user_fk'
+        ),
+        PrimaryKeyConstraint('id', name='designer_pk')
     )
 
 
@@ -59,8 +65,14 @@ class Engineer(Base):
     user_id = Column(Integer, nullable=False)
 
     __table_args__ = (
-        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-        PrimaryKeyConstraint('id')
+        ForeignKeyConstraint(
+            ['user_id'],
+            ['users.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='engineer_user_fk'
+        ),
+        PrimaryKeyConstraint('id', name='engineer_pk')
     )
 
 
@@ -71,8 +83,14 @@ class Technician(Base):
     user_id = Column(Integer, nullable=False)
 
     __table_args__ = (
-        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-        PrimaryKeyConstraint('id')
+        ForeignKeyConstraint(
+            ['user_id'],
+            ['users.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='technician_user_fk'
+        ),
+        PrimaryKeyConstraint('id', name='technician_pk')
     )
 
 
@@ -83,6 +101,12 @@ class Laboratorian(Base):
     user_id = Column(Integer, nullable=False)
 
     __table_args__ = (
-        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-        PrimaryKeyConstraint('id')
+        ForeignKeyConstraint(
+            ['user_id'],
+            ['users.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='laboratorian_user_fk'
+        ),
+        PrimaryKeyConstraint('id', name='laboratorian_pk')
     )

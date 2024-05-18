@@ -1,1 +1,1 @@
-drop table if exists technicians;
+DROP TABLE IF EXISTS technicians;
