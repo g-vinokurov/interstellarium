@@ -25,6 +25,7 @@ class Migrator:
         user.email = email
         user.set_password(password)
         user.name = name
+        user.is_superuser = True
 
         session.add(user)
         session.commit()
