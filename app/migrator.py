@@ -8,6 +8,9 @@ import config
 
 class Migrator:
     def init(self):
+
+        # Run manually all SQL-migrations before this step!
+
         session = db.Session()
 
         email = config.SUPERUSER_EMAIL

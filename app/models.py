@@ -21,8 +21,10 @@ class User(Base, UserMixin):
     __tablename__ = 'users'
 
     id = Column(Integer, autoincrement=True)
-    email = Column(String, nullable=False)
-    password_hash = Column(String, nullable=False)
+    email = Column(String(255), nullable=False)
+    password_hash = Column(String(512), nullable=False)
+
+    name = Column(String(255), nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='user_pk'),
