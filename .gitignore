@@ -161,4 +161,4 @@ cython_debug/
 .idea/
 
 # Databases
-db/dev.sqlite
+db/storage.sqlite

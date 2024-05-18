@@ -1,10 +1,16 @@
 :root {
-    --interstellarium-font-family: 'Nunito';
-    --interstellarium-goto-dashboard-link-font-size: 3vw;
+    --interstellarium-base-font-family: 'Nunito';
+    --interstellarium-special-font-family: 'Rubik Vinyl';
+    --interstellarium-login-form-font-size: 1rem;
+}
+
+html, body {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
 }
 
 .interstellarium-container {
-    height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -39,32 +45,38 @@
     align-items: center;
 }
 
-.interstellarium-login-form {
-    width: 100%;
-}
-
-.btn-interstellarium {
-    background: var(--interstellarium-gradient);
-    color: #FFFFFF;
-    font-family: var(--interstellarium-font-family), sans-serif;
-}
-
 .btn-interstellarium,
 .btn-interstellarium:hover,
 .btn-interstellarium:active,
 .btn-interstellarium:focus-visible {
     background: var(--interstellarium-gradient);
     color: #FFFFFF !important;
-    font-family: var(--interstellarium-font-family), sans-serif;
+    font-family: var(--interstellarium-base-font-family), sans-serif;
     outline: none;
+}
+
+.interstellarium-login-form-header {
+    font-family: var(--interstellarium-special-font-family), sans-serif;
+    font-size: 5vw;
+    font-weight: 900;
+    text-align: center;
+    background: var(--interstellarium-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--interstellarium-primary);
 }
 
 @media (min-width: 576px) {
     :root {
+        --interstellarium-login-form-font-size: 1.25rem;
     }
 
     .interstellarium-login {
         width: 75%;
+    }
+
+    .interstellarium-login-form-header {
+        font-size: 4vw;
     }
 }
 
@@ -72,33 +84,35 @@
     :root {
     }
 
-    .interstellarium-login {
-        flex-direction: row;
-        margin: 2rem;
+    .interstellarium-login-picture-wrapper {
+        justify-content: center;
+        align-items: center;
         padding: 2rem;
     }
 
-    .interstellarium-login-picture-wrapper {
-        flex-basis: 50%;
-        align-items: center;
-    }
-
-    .interstellarium-login-picture {
-        width: 100%;
-        max-width: 40vh;
-    }
-
-    .interstellarium-login-form-wrapper {
-        flex-basis: 50%;
+    .interstellarium-login-form-header {
+        font-size: 3vw;
     }
 }
 
 @media (min-width: 992px) {
     :root {
     }
+
+    .interstellarium-login-picture-wrapper {
+        padding: 4rem;
+    }
 }
 
 @media (min-width: 1200px) {
     :root {
     }
+
+    .interstellarium-login-picture-wrapper {
+        padding: 3rem;
+    }
+}
+
+.interstellarium-login-form input {
+    font-size: var(--interstellarium-login-form-font-size);
 }
