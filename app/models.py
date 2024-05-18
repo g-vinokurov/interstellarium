@@ -36,3 +36,14 @@ class User(Base, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class Designer(Base):
+    __tablename__ = 'designers'
+    id = Column(Integer, autoincrement=True)
+    user_id = Column(Integer, nullable=False)
+
+    __table_args__ = (
+        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+        PrimaryKeyConstraint('id', name='designer_pk')
+    )

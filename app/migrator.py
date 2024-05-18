@@ -15,6 +15,7 @@ class Migrator:
 
         email = config.SUPERUSER_EMAIL
         password = config.SUPERUSER_PASSWORD
+        name = config.SUPERUSER_NAME
 
         user = session.query(User).filter_by(email=email).first()
         if user is not None:
@@ -23,6 +24,7 @@ class Migrator:
         user = User()
         user.email = email
         user.set_password(password)
+        user.name = name
 
         session.add(user)
         session.commit()
