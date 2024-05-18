@@ -47,3 +47,25 @@ class Designer(Base):
         ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
         PrimaryKeyConstraint('id', name='designer_pk')
     )
+
+
+class Engineer(Base):
+    __tablename__ = 'engineers'
+    id = Column(Integer, autoincrement=True)
+    user_id = Column(Integer, nullable=False)
+
+    __table_args__ = (
+        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+        PrimaryKeyConstraint('id', name='engineer_pk')
+    )
+
+
+class Technician(Base):
+    __tablename__ = 'technicians'
+    id = Column(Integer, autoincrement=True)
+    user_id = Column(Integer, nullable=False)
+
+    __table_args__ = (
+        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+        PrimaryKeyConstraint('id', name='technician_pk')
+    )
