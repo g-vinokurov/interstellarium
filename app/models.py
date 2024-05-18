@@ -40,6 +40,7 @@ class User(Base, UserMixin):
 
 class Designer(Base):
     __tablename__ = 'designers'
+
     id = Column(Integer, autoincrement=True)
     user_id = Column(Integer, nullable=False)
 
@@ -51,6 +52,7 @@ class Designer(Base):
 
 class Engineer(Base):
     __tablename__ = 'engineers'
+
     id = Column(Integer, autoincrement=True)
     user_id = Column(Integer, nullable=False)
 
@@ -62,6 +64,7 @@ class Engineer(Base):
 
 class Technician(Base):
     __tablename__ = 'technicians'
+
     id = Column(Integer, autoincrement=True)
     user_id = Column(Integer, nullable=False)
 
@@ -73,10 +76,22 @@ class Technician(Base):
 
 class Laboratorian(Base):
     __tablename__ = 'laboratorians'
+
     id = Column(Integer, autoincrement=True)
     user_id = Column(Integer, nullable=False)
 
     __table_args__ = (
         ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+        PrimaryKeyConstraint('id')
+    )
+
+
+class Department(Base):
+    __tablename__ = 'departments'
+
+    id = Column(Integer, autoincrement=True)
+    name = Column(String(512), nullable=False)
+
+    __table_args__ = (
         PrimaryKeyConstraint('id')
     )
