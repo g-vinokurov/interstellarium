@@ -27,10 +27,18 @@ class User(Base, UserMixin):
     is_superuser = Column(Boolean, nullable=False, default=False)
 
     name = Column(String(255), nullable=True)
+    department_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='user_pk'),
         UniqueConstraint('email', name='user_email_unique'),
+        ForeignKeyConstraint(
+            ['department_id'],
+            ['departments.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='user_department_department_fk'
+        )
     )
 
     def set_password(self, password):
