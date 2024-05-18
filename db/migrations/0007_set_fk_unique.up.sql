@@ -1,0 +1,10 @@
+ALTER TABLE IF EXISTS designers
+    ADD CONSTRAINT designer_user_unique UNIQUE (user_id);
+ALTER TABLE IF EXISTS engineers
+    ADD CONSTRAINT engineer_user_unique UNIQUE (user_id);
+ALTER TABLE IF EXISTS technicians
+    ADD CONSTRAINT technician_user_unique UNIQUE (user_id);
+ALTER TABLE IF EXISTS laboratorians
+    ADD CONSTRAINT laboratorian_user_unique UNIQUE (user_id);
+ALTER TABLE IF EXISTS departments
+    ADD CONSTRAINT department_leader_unique UNIQUE (leader_id);

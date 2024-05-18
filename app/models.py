@@ -54,7 +54,8 @@ class Designer(Base):
             onupdate='CASCADE',
             name='designer_user_fk'
         ),
-        PrimaryKeyConstraint('id', name='designer_pk')
+        PrimaryKeyConstraint('id', name='designer_pk'),
+        UniqueConstraint('user_id', name='designer_user_unique')
     )
 
 
@@ -72,7 +73,8 @@ class Engineer(Base):
             onupdate='CASCADE',
             name='engineer_user_fk'
         ),
-        PrimaryKeyConstraint('id', name='engineer_pk')
+        PrimaryKeyConstraint('id', name='engineer_pk'),
+        UniqueConstraint('user_id', name='engineer_user_unique')
     )
 
 
@@ -90,7 +92,8 @@ class Technician(Base):
             onupdate='CASCADE',
             name='technician_user_fk'
         ),
-        PrimaryKeyConstraint('id', name='technician_pk')
+        PrimaryKeyConstraint('id', name='technician_pk'),
+        UniqueConstraint('user_id', name='technician_user_unique')
     )
 
 
@@ -108,5 +111,25 @@ class Laboratorian(Base):
             onupdate='CASCADE',
             name='laboratorian_user_fk'
         ),
-        PrimaryKeyConstraint('id', name='laboratorian_pk')
+        PrimaryKeyConstraint('id', name='laboratorian_pk'),
+        UniqueConstraint('user_id', name='laboratorian_user_unique')
+    )
+
+
+class Department(Base):
+    __tablename__ = 'departments'
+
+    id = Column(Integer, autoincrement=True)
+    leader_id = Column(Integer, nullable=False)
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ['leader_id'],
+            ['users.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='department_leader_user_fk'
+        ),
+        PrimaryKeyConstraint('id', name='department_pk'),
+        UniqueConstraint('leader_id', name='department_leader_unique')
     )
