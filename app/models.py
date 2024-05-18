@@ -27,7 +27,7 @@ class User(Base, UserMixin):
     name = Column(String(255), nullable=True)
 
     __table_args__ = (
-        PrimaryKeyConstraint('id', name='user_pk'),
+        PrimaryKeyConstraint('id'),
         UniqueConstraint('email'),
     )
 
@@ -45,7 +45,7 @@ class Designer(Base):
 
     __table_args__ = (
         ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-        PrimaryKeyConstraint('id', name='designer_pk')
+        PrimaryKeyConstraint('id')
     )
 
 
@@ -56,7 +56,7 @@ class Engineer(Base):
 
     __table_args__ = (
         ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-        PrimaryKeyConstraint('id', name='engineer_pk')
+        PrimaryKeyConstraint('id')
     )
 
 
@@ -67,5 +67,16 @@ class Technician(Base):
 
     __table_args__ = (
         ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-        PrimaryKeyConstraint('id', name='technician_pk')
+        PrimaryKeyConstraint('id')
+    )
+
+
+class Laboratorian(Base):
+    __tablename__ = 'laboratorians'
+    id = Column(Integer, autoincrement=True)
+    user_id = Column(Integer, nullable=False)
+
+    __table_args__ = (
+        ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
+        PrimaryKeyConstraint('id')
     )
