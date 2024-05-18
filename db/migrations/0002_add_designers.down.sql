@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS designers;
+drop table if exists designers;

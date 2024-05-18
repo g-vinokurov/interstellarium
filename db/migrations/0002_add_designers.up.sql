@@ -1,6 +1,4 @@
-CREATE TABLE IF NOT EXISTS designers (
-	id INTEGER AUTOINCREMENT NOT NULL,
-	user_id INTEGER NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE CASCADE
+create table if not exists designers (
+    id      serial primary key,
+    user_id integer not null references users (id) on delete cascade
 );

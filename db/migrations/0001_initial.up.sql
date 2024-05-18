@@ -1,8 +1,6 @@
-CREATE TABLE IF NOT EXISTS users (
-	id INTEGER AUTOINCREMENT NOT NULL,
-	email VARCHAR(255) NOT NULL,
-	password_hash VARCHAR(512) NOT NULL,
-	name VARCHAR(255),
-	PRIMARY KEY (id),
-	UNIQUE (email)
+create table if not exists users (
+    id            serial primary key,
+    email         varchar(255) not null unique,
+    password_hash varchar(512) not null,
+    name          varchar(255)
 );

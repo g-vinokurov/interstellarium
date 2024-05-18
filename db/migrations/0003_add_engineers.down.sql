@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS engineers;
+drop table if exists engineers;
