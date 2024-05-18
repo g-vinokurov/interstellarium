@@ -84,14 +84,3 @@ class Laboratorian(Base):
         ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
         PrimaryKeyConstraint('id')
     )
-
-
-class Department(Base):
-    __tablename__ = 'departments'
-
-    id = Column(Integer, autoincrement=True)
-    name = Column(String(512), nullable=False)
-
-    __table_args__ = (
-        PrimaryKeyConstraint('id')
-    )
