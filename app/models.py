@@ -4,6 +4,7 @@ from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Boolean
+from sqlalchemy import Date
 
 from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy import ForeignKeyConstraint
@@ -27,6 +28,8 @@ class User(Base, UserMixin):
     is_superuser = Column(Boolean, nullable=False, default=False)
 
     name = Column(String(255), nullable=True)
+    birthdate = Column(Date, nullable=True)
+    
     department_id = Column(Integer, nullable=True)
 
     __table_args__ = (
