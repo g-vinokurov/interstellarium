@@ -26,10 +26,11 @@ class User(Base, UserMixin):
     email = Column(String(255), nullable=False)
     password_hash = Column(String(512), nullable=False)
     is_superuser = Column(Boolean, nullable=False, default=False)
+    is_admin = Column(Boolean, nullable=False, default=False)
 
     name = Column(String(255), nullable=True)
     birthdate = Column(Date, nullable=True)
-    
+
     department_id = Column(Integer, nullable=True)
 
     __table_args__ = (
