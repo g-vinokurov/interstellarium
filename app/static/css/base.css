@@ -5,9 +5,11 @@
     --interstellarium-tertiary: #495057;
     --interstellarium-light-grey: #AAA;
     --interstellarium-gradient: linear-gradient(135deg, #0575E6 40%, #021B79 110%);
+    --interstellarium-base-font-family: 'Nunito';
+    --interstellarium-special-font-family: 'Rubik Vinyl';
 }
 
-html, body, #app {
+html, body {
     min-height: 100vh;
     margin: 0;
     display: flex;

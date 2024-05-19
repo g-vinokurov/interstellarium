@@ -1,9 +1,3 @@
-:root {
-    --interstellarium-base-font-family: 'Nunito';
-    --interstellarium-special-font-family: 'Rubik Vinyl';
-    --interstellarium-login-form-font-size: 1rem;
-}
-
 .interstellarium-container {
     width: 100%;
     display: flex;
@@ -17,8 +11,6 @@
     justify-content: center;
     align-items: stretch;
     flex-direction: column;
-    /* border: 1px solid var(--interstellarium-light-grey);
-    border-radius: 4rem;*/
 }
 
 .interstellarium-login-picture-wrapper {
@@ -61,8 +53,8 @@
 }
 
 @media (min-width: 576px) {
-    :root {
-        --interstellarium-login-form-font-size: 1.25rem;
+    .interstellarium-login-form input {
+        font-size: 1.25rem;
     }
 
     .interstellarium-login {
@@ -75,9 +67,6 @@
 }
 
 @media (min-width: 768px) {
-    :root {
-    }
-
     .interstellarium-login-picture-wrapper {
         justify-content: center;
         align-items: center;
@@ -90,23 +79,13 @@
 }
 
 @media (min-width: 992px) {
-    :root {
-    }
-
     .interstellarium-login-picture-wrapper {
         padding: 4rem;
     }
 }
 
 @media (min-width: 1200px) {
-    :root {
-    }
-
     .interstellarium-login-picture-wrapper {
         padding: 3rem;
     }
-}
-
-.interstellarium-login-form input {
-    font-size: var(--interstellarium-login-form-font-size);
 }
