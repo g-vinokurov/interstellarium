@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS groups (
+	id      SERIAL NOT NULL,
+	CONSTRAINT group_pk PRIMARY KEY (id)
+);

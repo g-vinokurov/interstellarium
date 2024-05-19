@@ -185,3 +185,13 @@ class Work(Base):
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
     )
+
+
+class Group(Base):
+    __tablename__ = 'groups'
+
+    id = Column(Integer, autoincrement=True)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='group_pk'),
+    )
