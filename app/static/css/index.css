@@ -4,10 +4,6 @@
     --interstellarium-goto-dashboard-link-font-size: 4vw;
 }
 
-html, body {
-    height: 100%;
-}
-
 .interstellarium-container {
     height: 100%;
     width: 100%;

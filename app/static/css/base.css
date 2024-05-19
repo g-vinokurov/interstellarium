@@ -7,8 +7,12 @@
     --interstellarium-gradient: linear-gradient(135deg, #0575E6 40%, #021B79 110%);
 }
 
-.font-interstellarium {
-    font-family: var(--interstellarium-font-family), sans-serif;
+html, body, #app {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
 }
 
 @media (min-width: 576px) {

@@ -4,12 +4,6 @@
     --interstellarium-login-form-font-size: 1rem;
 }
 
-html, body {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-}
-
 .interstellarium-container {
     width: 100%;
     display: flex;
