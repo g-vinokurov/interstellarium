@@ -145,3 +145,13 @@ class Department(Base):
         PrimaryKeyConstraint('id', name='department_pk'),
         UniqueConstraint('leader_id', name='department_leader_unique')
     )
+
+
+class Contract(Base):
+    __tablename__ = 'contracts'
+
+    id = Column(Integer, autoincrement=True)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='contract_pk'),
+    )

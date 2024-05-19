@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS contracts (
+	id      SERIAL NOT NULL,
+	CONSTRAINT contract_pk PRIMARY KEY (id)
+);
