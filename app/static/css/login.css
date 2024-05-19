@@ -31,16 +31,6 @@
     align-items: center;
 }
 
-.btn-interstellarium,
-.btn-interstellarium:hover,
-.btn-interstellarium:active,
-.btn-interstellarium:focus-visible {
-    background: var(--interstellarium-gradient);
-    color: #FFFFFF !important;
-    font-family: var(--interstellarium-base-font-family), sans-serif;
-    outline: none;
-}
-
 .interstellarium-login-form-header {
     font-family: var(--interstellarium-special-font-family), sans-serif;
     font-size: 5vw;

@@ -26,6 +26,7 @@ class Migrator:
         user.set_password(password)
         user.name = name
         user.is_superuser = True
+        user.is_admin = True
 
         session.add(user)
         session.commit()

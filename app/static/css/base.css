@@ -17,6 +17,17 @@ html, body {
     align-items: stretch;
 }
 
+.btn-interstellarium,
+.btn-interstellarium:hover,
+.btn-interstellarium:active,
+.btn-interstellarium:focus-visible {
+    background: var(--interstellarium-gradient);
+    color: #FFFFFF !important;
+    font-family: var(--interstellarium-base-font-family), sans-serif;
+    outline: none;
+}
+
+
 @media (min-width: 576px) {
     :root {
     }

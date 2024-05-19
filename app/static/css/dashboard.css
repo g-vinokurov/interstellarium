@@ -1,6 +1,88 @@
+html, body {
+    width: 100%;
+}
+
 .interstellarium-container {
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: stretch;
+}
+
+.interstellarium-dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.interstellarium-dashboard-header {
+    display: flex;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+.interstellarium-dashboard-logo-wrapper {
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.interstellarium-dashboard-nav {
+    align-self: stretch;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.interstellarium-dashboard-logo {
+    font-family: var(--interstellarium-special-font-family), sans-serif;
+    font-size: min(5vh, 7vw);
+    font-weight: 900;
+    text-align: center;
+    background: var(--interstellarium-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--interstellarium-primary);
+}
+
+.interstellarium-dashboard-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.interstellarium-dashboard-section {
+    height: 100px;
+    margin: .5rem;
+    border: 1px solid var(--interstellarium-light-grey);
+    border-radius: 1.5rem;
+}
+
+@media (min-width: 576px) {
+    .interstellarium-dashboard-logo {
+        font-size: min(6vh, 7vw);
+    }
+
+    .interstellarium-dashboard {
+        min-width: 50%;
+    }
+}
+
+@media (min-width: 768px) {
+    .interstellarium-dashboard-logo {
+        font-size: min(7vh, 7vw);
+    }
+
+    .interstellarium-dashboard {
+        min-width: 75%;
+    }
+}
+
+@media (min-width: 992px) {
+    .interstellarium-dashboard {
+        max-width: 75%;
+    }
+}
+
+@media (min-width: 1200px) {
 }
