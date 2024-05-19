@@ -13,3 +13,7 @@ You should use Python 3.11.5 or other compatible versions
 ```commandline
 python main.py
 ```
+## Index page
+![Index](./docs/resources/index.png "Index")
+## Login page
+![Login](./docs/resources/login.png "Login")
