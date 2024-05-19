@@ -175,3 +175,13 @@ class Equipment(Base):
     __table_args__ = (
         PrimaryKeyConstraint('id', name='equipment_pk'),
     )
+
+
+class Work(Base):
+    __tablename__ = 'works'
+
+    id = Column(Integer, autoincrement=True)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='work_pk'),
+    )
