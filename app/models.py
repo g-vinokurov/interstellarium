@@ -155,3 +155,13 @@ class Contract(Base):
     __table_args__ = (
         PrimaryKeyConstraint('id', name='contract_pk'),
     )
+
+
+class Project(Base):
+    __tablename__ = 'projects'
+
+    id = Column(Integer, autoincrement=True)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='project_pk'),
+    )

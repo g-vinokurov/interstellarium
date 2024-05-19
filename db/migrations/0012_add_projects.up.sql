@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS projects (
+	id      SERIAL NOT NULL,
+	CONSTRAINT project_pk PRIMARY KEY (id)
+);
