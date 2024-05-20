@@ -4,7 +4,7 @@ import config
 
 
 class Migrator:
-    def __init__(self, url, echo):
+    def __init__(self, url, echo, migrations):
 
         # session = db.Session()
 

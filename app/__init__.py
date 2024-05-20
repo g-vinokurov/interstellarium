@@ -20,7 +20,7 @@ app.add_middleware(
 from .migrator import Migrator
 from .db import Database
 
-migrator = Migrator(config.DB_URL, config.DB_ECHO)
+migrator = Migrator(config.DB_URL, config.DB_ECHO, config.DB_MIGRATIONS)
 db = Database(config.DB_URL, config.DB_ECHO)
 
 from . import models
