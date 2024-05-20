@@ -1,44 +1,30 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask
+from fastapi import FastAPI
 
-from flask_wtf.csrf import CSRFProtect
-from flask_login import LoginManager
+from fastapi.middleware.cors import CORSMiddleware
 
 import config
 
-app = Flask(
-    import_name=__name__,
-    template_folder=config.FLASK_TEMPLATES,
-    static_folder=config.FLASK_STATIC
+
+app = FastAPI()
+
+# TODO: it must be confiured more carefully
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-app.config['SECRET_KEY'] = config.FLASK_SECRET_KEY
+from .migrator import Migrator
+from .db import Database
 
-csrf_protection = CSRFProtect()
-csrf_protection.init_app(app)
+migrator = Migrator(config.DB_URL, config.DB_ECHO)
+db = Database(config.DB_URL, config.DB_ECHO)
 
-login_manager = LoginManager()
-login_manager.session_protection = 'strong'
-login_manager.login_view = 'login'
-login_manager.login_message_category = 'info'
-login_manager.init_app(app)
-
-from . import db as _db
 from . import models
-
-database = _db.Database()
-
-from . import migrator as _migrator
-
-migrator = _migrator.Migrator()
-migrator.init()
-
-from . import forms
-from . import views
 
 
 def run():
-    host = config.FLASK_HOST
-    port = config.FLASK_PORT
-    app.run(host, port)
+    pass

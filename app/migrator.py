@@ -1,32 +1,28 @@
 # -*- coding: utf-8 -*-
 
-from app import database as db
-from app.models import User
-
 import config
 
 
 class Migrator:
-    def init(self):
+    def __init__(self, url, echo):
 
-        # Run manually all SQL-migrations before this step!
+        # session = db.Session()
 
-        session = db.Session()
+        # email = config.SUPERUSER_EMAIL
+        # password = config.SUPERUSER_PASSWORD
+        # name = config.SUPERUSER_NAME
 
-        email = config.SUPERUSER_EMAIL
-        password = config.SUPERUSER_PASSWORD
-        name = config.SUPERUSER_NAME
+        # user = session.query(User).filter_by(email=email).first()
 
-        user = session.query(User).filter_by(email=email).first()
-        if user is not None:
-            return
+        # if user is None:
+        #     user = User()
 
-        user = User()
-        user.email = email
-        user.set_password(password)
-        user.name = name
-        user.is_superuser = True
-        user.is_admin = True
+        # user.email = email
+        # user.set_password(password)
+        # user.name = name
+        # user.is_superuser = True
+        # user.is_admin = True
 
-        session.add(user)
-        session.commit()
+        # session.add(user)
+        # session.commit()
+        pass
