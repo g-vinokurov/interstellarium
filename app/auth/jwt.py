@@ -8,7 +8,10 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-from app.auth.schema import TokenData
+from sqlalchemy import select
+
+from app.db import db
+from app.models import User
 
 
 SECRET_KEY = config.AUTH_SECRET_KEY
@@ -32,8 +35,13 @@ def verify_token(token: str, credentials_exception):
         email: str = payload.get('sub')
         if email is None:
             raise credentials_exception
-        token_data = TokenData(email=email)
-        return token_data
+        with db.Session() as session:
+            user = session.execute(
+                select(User).filter_by(email=email)
+            ).scalar_one_or_none()
+        if user is None:
+            raise credentials_exception
+        return user
     except JWTError:
         raise credentials_exception
 

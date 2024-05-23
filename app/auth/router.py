@@ -18,7 +18,7 @@ def login(request: schema.LoginRequest):
     with db.Session() as session:
         user = session.execute(
             select(User).filter_by(email=request.email)
-        ).scalar_one()
+        ).scalar_one_or_none()
 
     if user is None:
         raise HTTPException(
@@ -42,5 +42,5 @@ def login(request: schema.LoginRequest):
 
 # How to use JWT authorization:
 # @router.get('/api/users/me', response_model=schema.TokenData)
-# def get_me(current_user: schema.TokenData = Depends(get_current_user)):
+# def get_me(current_user: User = Depends(get_current_user)):
 #     return current_user
