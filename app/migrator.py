@@ -26,3 +26,6 @@ class Migrator:
         # session.add(user)
         # session.commit()
         pass
+
+
+migrator = Migrator(config.DB_URL, config.DB_ECHO, config.DB_MIGRATIONS)
