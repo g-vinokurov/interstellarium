@@ -2,6 +2,8 @@
 
 from fastapi import APIRouter, HTTPException, status
 
+from sqlalchemy import select
+
 from app.db import db
 from app.models import User
 
@@ -13,8 +15,10 @@ router = APIRouter(tags=['auth'])
 
 @router.post('/api/auth/login', response_model=schema.Token)
 def login(request: schema.LoginRequest):
-    session = db.get()
-    user = session.query(User).filter(User.email == request.email).first()
+    with db.Session() as session:
+        user = session.execute(
+            select(User).filter_by(email=request.email)
+        ).scalar_one()
 
     if user is None:
         raise HTTPException(

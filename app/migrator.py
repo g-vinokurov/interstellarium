@@ -2,30 +2,34 @@
 
 import config
 
+from sqlalchemy import create_engine
+from sqlalchemy.sql import text
+
+import os
+
 
 class Migrator:
     def __init__(self, url, echo, migrations):
+        self.url = url
+        self.echo = echo
+        self.migrations = migrations
 
-        # session = db.Session()
+    def up(self):
+        engine = create_engine(url=self.url, echo=self.echo)
+        with engine.connect() as connection:
+            self.__up(connection)
 
-        # email = config.SUPERUSER_EMAIL
-        # password = config.SUPERUSER_PASSWORD
-        # name = config.SUPERUSER_NAME
-
-        # user = session.query(User).filter_by(email=email).first()
-
-        # if user is None:
-        #     user = User()
-
-        # user.email = email
-        # user.set_password(password)
-        # user.name = name
-        # user.is_superuser = True
-        # user.is_admin = True
-
-        # session.add(user)
-        # session.commit()
-        pass
+    def __up(self, connection):
+        for filename in os.listdir(self.migrations):
+            if not filename.endswith('.up.sql'):
+                continue
+            with open(os.path.join(self.migrations, filename)) as file:
+                query = text(file.read())
+            try:
+                connection.execute(query)
+            except Exception as error:
+                print(error.with_traceback(None))
 
 
 migrator = Migrator(config.DB_URL, config.DB_ECHO, config.DB_MIGRATIONS)
+migrator.up()
