@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS departments
+    DROP COLUMN IF EXISTS name;

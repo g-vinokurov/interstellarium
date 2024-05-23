@@ -134,6 +134,8 @@ class Department(Base):
     id = Column(Integer, autoincrement=True)
     leader_id = Column(Integer, nullable=False)
 
+    name = Column(String(512), nullable=True)
+
     __table_args__ = (
         ForeignKeyConstraint(
             ['leader_id'],
