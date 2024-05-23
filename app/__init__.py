@@ -6,5 +6,6 @@ from . import db
 from . import utils
 
 from . import auth
+from . import users
 
 utils.fill_database_by_initial_values()
