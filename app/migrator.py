@@ -18,6 +18,7 @@ class Migrator:
         engine = create_engine(url=self.url, echo=self.echo)
         with engine.connect() as connection:
             self.__up(connection)
+            connection.commit()
 
     def __up(self, connection):
         for filename in os.listdir(self.migrations):
