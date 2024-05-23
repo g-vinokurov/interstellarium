@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from sqlalchemy import select
 
 from app.db import db
 from app.models import User
 
-from app.auth.jwt import create_access_token
+from app.auth.jwt import create_access_token, get_current_user
 from app.auth import schema
 
 router = APIRouter(tags=['auth'])
@@ -35,4 +35,12 @@ def login(request: schema.LoginRequest):
     # Generate a JWT Token
     access_token = create_access_token(data={'sub': user.email})
 
-    return {'access_token': access_token, 'token_type': 'bearer'}
+    return {
+        'access_token': access_token,
+        'token_type': 'bearer'
+    }
+
+# How to use JWT authorization:
+# @router.get('/api/users/me', response_model=schema.TokenData)
+# def get_me(current_user: schema.TokenData = Depends(get_current_user)):
+#     return current_user
