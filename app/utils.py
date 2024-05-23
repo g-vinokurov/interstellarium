@@ -2,6 +2,7 @@
 
 import config
 
+from datetime import date
 from sqlalchemy import select
 
 from app.db import db
@@ -23,6 +24,7 @@ def fill_database_by_initial_values():
     superuser.name = config.SUPERUSER_NAME
     superuser.is_superuser = True
     superuser.is_admin = True
+    superuser.birthdate = date.fromisoformat(config.SUPERUSER_BIRTHDATE)
 
     with db.Session() as session:
         session.add(superuser)
