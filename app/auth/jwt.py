@@ -38,7 +38,7 @@ def verify_token(token: str, credentials_exception):
         with db.Session() as session:
             user = session.execute(
                 select(User).filter_by(email=email)
-            ).first()
+            ).scalar_one_or_none()
         if user is None:
             raise credentials_exception
         return user
