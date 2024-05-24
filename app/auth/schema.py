@@ -15,3 +15,15 @@ class TokenData(BaseModel):
 class LoginRequest(BaseModel):
     email: str
     password: str
+
+
+class User(BaseModel):
+    id: int
+    email: str
+    is_superuser: bool
+    is_admin: bool
+
+
+class LoginResponse(BaseModel):
+    token: Token
+    user: User

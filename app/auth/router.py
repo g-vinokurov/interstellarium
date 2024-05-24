@@ -13,7 +13,7 @@ from app.auth import schema
 router = APIRouter(tags=['auth'])
 
 
-@router.post('/api/auth/login', response_model=schema.Token)
+@router.post('/api/auth/login', response_model=schema.LoginResponse)
 def login(request: schema.LoginRequest):
     with db.Session() as session:
         user = session.execute(
@@ -36,8 +36,16 @@ def login(request: schema.LoginRequest):
     access_token = create_access_token(data={'sub': user.email})
 
     return {
-        'access_token': access_token,
-        'token_type': 'bearer'
+        'token': {
+            'access_token': access_token,
+            'token_type': 'bearer',
+        },
+        'user': {
+            'id': user.id,
+            'email': user.email,
+            'is_superuser': user.is_superuser,
+            'is_admin': user.is_admin
+        }
     }
 
 # How to use JWT authorization:
