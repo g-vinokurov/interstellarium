@@ -17,7 +17,7 @@ router = APIRouter(tags=['users'])
 def get_all_users(filters: schema.UserFilters, current_user: User = Depends(get_current_user)):
     query = select(User.id, User.name, User.birthdate)
     if filters.name is not None and len(filters.name) != 0:
-        query = query.filter(User.name.ilike(filters.name))
+        query = query.filter(User.name.ilike(f'%{filters.name}%'))
     if filters.birthdate_to is not None:
         query = query.filter(User.birthdate <= filters.birthdate_to)
     if filters.birthdate_from is not None:
