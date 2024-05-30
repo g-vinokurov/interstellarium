@@ -240,9 +240,25 @@ class Equipment(Base):
 
     id = Column(Integer, autoincrement=True)
     name = Column(String(512), nullable=True)
+    department_id = Column(Integer, nullable=True)
+    group_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='equipment_pk'),
+        ForeignKeyConstraint(
+            ['department_id'],
+            ['departments.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='equipment_department_fk'
+        ),
+        ForeignKeyConstraint(
+            ['group_id'],
+            ['groups.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='equipment_group_fk'
+        ),
     )
 
 
