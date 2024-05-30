@@ -7,4 +7,4 @@ ALTER TABLE IF EXISTS works
         FOREIGN KEY (association_contract_project_id)
         REFERENCES associations_contract_project (id)
         ON DELETE SET NULL
-        ON UPDATE SET NULL;
+        ON UPDATE CASCADE;
