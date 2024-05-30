@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.auth.router import router as auth_router
 from app.users.router import router as users_router
 from app.departments.router import router as departments_router
+from app.contracts.router import router as contracts_router
+from app.projects.router import router as projects_router
 
 app = FastAPI()
 
@@ -20,7 +22,8 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(departments_router)
-
+app.include_router(contracts_router)
+app.include_router(projects_router)
 
 if __name__ == '__main__':
     pass
