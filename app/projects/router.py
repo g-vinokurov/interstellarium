@@ -22,7 +22,11 @@ def get_projects(
         Project.id,
         Project.name,
         Project.start_date,
-        Project.finish_date
+        Project.finish_date,
+        User.id,
+        User.name,
+        Group.id,
+        Group.name
     )
     query = query.join(User, User.id == Project.chief_id, isouter=True)
     query = query.join(Group, Group.id == Project.group_id, isouter=True)

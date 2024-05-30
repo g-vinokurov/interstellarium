@@ -22,7 +22,11 @@ def get_contracts(
         Contract.id,
         Contract.name,
         Contract.start_date,
-        Contract.finish_date
+        Contract.finish_date,
+        User.id,
+        User.name,
+        Group.id,
+        Group.name
     )
     query = query.join(User, User.id == Contract.chief_id, isouter=True)
     query = query.join(Group, Group.id == Contract.group_id, isouter=True)
