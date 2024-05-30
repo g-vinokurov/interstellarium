@@ -178,9 +178,25 @@ class Project(Base):
     __tablename__ = 'projects'
 
     id = Column(Integer, autoincrement=True)
+    chief_id = Column(Integer, nullable=True)
+    group_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='project_pk'),
+        ForeignKeyConstraint(
+            ['chief_id'],
+            ['users.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='project_chief_fk'
+        ),
+        ForeignKeyConstraint(
+            ['group_id'],
+            ['groups.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='project_group_fk'
+        ),
     )
 
 
