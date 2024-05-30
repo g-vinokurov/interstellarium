@@ -210,9 +210,17 @@ class Work(Base):
     __tablename__ = 'works'
 
     id = Column(Integer, autoincrement=True)
+    association_contract_project_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
+        ForeignKeyConstraint(
+            ['association_contract_project_id'],
+            ['associations_contract_project.id'],
+            ondelete='SET NULL',
+            onupdate='SET NULL',
+            name='work_association_contract_project_fk'
+        ),
     )
 
 
