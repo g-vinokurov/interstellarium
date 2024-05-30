@@ -6,10 +6,15 @@ from datetime import date
 from pydantic import BaseModel
 
 
+class Department(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+
 class User(BaseModel):
     id: int
     name: Optional[str] = None
-    birthdate: Optional[date] = None
+    department: Department
 
 
 class UserFilters(BaseModel):

@@ -7,5 +7,6 @@ from . import utils
 
 from . import auth
 from . import users
+from . import departments
 
 utils.fill_database_by_initial_values()

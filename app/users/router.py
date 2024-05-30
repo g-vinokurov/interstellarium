@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
 from app.db import db
-from app.models import User
+from app.models import User, Department
 
 from app.auth import get_current_user
 from app.users import schema
@@ -15,7 +15,8 @@ router = APIRouter(tags=['users'])
 
 @router.post('/api/users', response_model=list[schema.User])
 def get_all_users(filters: schema.UserFilters, current_user: User = Depends(get_current_user)):
-    query = select(User.id, User.name, User.birthdate)
+    query = select(User.id, User.name, Department.id, Department.name)
+    query = query.join(Department, Department.id == User.department_id, isouter=True)
     if filters.name is not None and len(filters.name) != 0:
         query = query.filter(User.name.ilike(f'%{filters.name}%'))
     if filters.birthdate_to is not None:
@@ -26,17 +27,21 @@ def get_all_users(filters: schema.UserFilters, current_user: User = Depends(get_
         query = query.filter(User.department_id == filters.department_id)
 
     with db.Session() as session:
-        users = session.execute(query).all()
+        data = session.execute(query).all()
 
-    data = []
-    for user_id, user_name, user_birthdate in users:
-        data.append({
+    items = []
+    for user_id, user_name, department_id, department_name in data:
+        item = {
             'id': user_id,
             'name': user_name,
-            'birthdate': user_birthdate
-        })
+            'department': {
+                'id': department_id,
+                'name': department_name,
+            }
+        }
+        items.append(item)
 
-    return data
+    return items
 
 
 @router.post('/api/users/create', response_model=schema.CreateUserResponse, status_code=status.HTTP_201_CREATED)
