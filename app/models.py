@@ -5,6 +5,7 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Boolean
 from sqlalchemy import Date
+from sqlalchemy import Double
 
 from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy import ForeignKeyConstraint
@@ -241,7 +242,8 @@ class Work(Base):
 
     id = Column(Integer, autoincrement=True)
     association_contract_project_id = Column(Integer, nullable=True)
-
+    cost = Column(Double, nullable=False, default=0.0)
+    
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
         ForeignKeyConstraint(
