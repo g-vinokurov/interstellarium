@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import Column
-from sqlalchemy import Table
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Boolean
@@ -133,15 +132,14 @@ class Department(Base):
     __tablename__ = 'departments'
 
     id = Column(Integer, autoincrement=True)
-    chief_id = Column(Integer, nullable=False)
-
     name = Column(String(512), nullable=True)
+    chief_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         ForeignKeyConstraint(
             ['chief_id'],
             ['users.id'],
-            ondelete='CASCADE',
+            ondelete='SET NULL',
             onupdate='CASCADE',
             name='department_chief_user_fk'
         ),
@@ -154,9 +152,25 @@ class Contract(Base):
     __tablename__ = 'contracts'
 
     id = Column(Integer, autoincrement=True)
+    chief_id = Column(Integer, nullable=True)
+    group_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='contract_pk'),
+        ForeignKeyConstraint(
+            ['chief_id'],
+            ['users.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='contract_chief_fk'
+        ),
+        ForeignKeyConstraint(
+            ['group_id'],
+            ['groups.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='contract_group_fk'
+        ),
     )
 
 
@@ -218,7 +232,7 @@ class Work(Base):
             ['association_contract_project_id'],
             ['associations_contract_project.id'],
             ondelete='SET NULL',
-            onupdate='SET NULL',
+            onupdate='CASCADE',
             name='work_association_contract_project_fk'
         ),
     )
@@ -232,5 +246,3 @@ class Group(Base):
     __table_args__ = (
         PrimaryKeyConstraint('id', name='group_pk'),
     )
-
-
