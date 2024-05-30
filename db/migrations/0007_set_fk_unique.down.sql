@@ -7,4 +7,4 @@ ALTER TABLE IF EXISTS technicians
 ALTER TABLE IF EXISTS laboratorians
     DROP CONSTRAINT IF EXISTS laboratorian_user_unique;
 ALTER TABLE IF EXISTS departments
-    DROP CONSTRAINT IF EXISTS department_leader_unique;
+    DROP CONSTRAINT IF EXISTS department_chief_unique;

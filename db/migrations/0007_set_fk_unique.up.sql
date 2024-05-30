@@ -15,5 +15,5 @@ ALTER TABLE IF EXISTS laboratorians
     ADD CONSTRAINT laboratorian_user_unique UNIQUE (user_id);
 
 ALTER TABLE IF EXISTS departments
-    DROP CONSTRAINT IF EXISTS department_leader_unique,
-    ADD CONSTRAINT department_leader_unique UNIQUE (leader_id);
+    DROP CONSTRAINT IF EXISTS department_chief_unique,
+    ADD CONSTRAINT department_chief_unique UNIQUE (chief_id);

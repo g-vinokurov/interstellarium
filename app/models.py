@@ -132,20 +132,20 @@ class Department(Base):
     __tablename__ = 'departments'
 
     id = Column(Integer, autoincrement=True)
-    leader_id = Column(Integer, nullable=False)
+    chief_id = Column(Integer, nullable=False)
 
     name = Column(String(512), nullable=True)
 
     __table_args__ = (
         ForeignKeyConstraint(
-            ['leader_id'],
+            ['chief_id'],
             ['users.id'],
             ondelete='CASCADE',
             onupdate='CASCADE',
-            name='department_leader_user_fk'
+            name='department_chief_user_fk'
         ),
         PrimaryKeyConstraint('id', name='department_pk'),
-        UniqueConstraint('leader_id', name='department_leader_unique')
+        UniqueConstraint('chief_id', name='department_chief_unique')
     )
 
 
