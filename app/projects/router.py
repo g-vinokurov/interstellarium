@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
 from app.db import db
-from app.models import User, Project
+from app.models import User, Group, Project
 
 from app.auth import get_current_user
 from app.projects import schema
@@ -24,6 +24,8 @@ def get_projects(
         Project.start_date,
         Project.finish_date
     )
+    query = query.join(User, User.id == Project.chief_id, isouter=True)
+    query = query.join(Group, Group.id == Project.group_id, isouter=True)
     if filters.name is not None and len(filters.name) != 0:
         query = query.filter(Project.name.ilike(f'%{filters.name}%'))
     if filters.start_date is not None:
@@ -35,12 +37,20 @@ def get_projects(
         data = session.execute(query).all()
 
     items = []
-    for project_id, project_name, project_start_date, project_finish_date in data:
+    for row in data:
         item = {
-            'id': project_id,
-            'name': project_name,
-            'start_date': project_start_date,
-            'finish_date': project_finish_date,
+            'id': row[0],
+            'name': row[1],
+            'start_date': row[2],
+            'finish_date': row[3],
+            'chief': {
+                'id': row[4],
+                'name': row[5]
+            },
+            'group': {
+                'id': row[6],
+                'name': row[7]
+            }
         }
         items.append(item)
 

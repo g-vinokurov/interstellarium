@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
 from app.db import db
-from app.models import User, Contract
+from app.models import User, Group, Contract
 
 from app.auth import get_current_user
 from app.contracts import schema
@@ -24,6 +24,8 @@ def get_contracts(
         Contract.start_date,
         Contract.finish_date
     )
+    query = query.join(User, User.id == Contract.chief_id, isouter=True)
+    query = query.join(Group, Group.id == Contract.group_id, isouter=True)
     if filters.name is not None and len(filters.name) != 0:
         query = query.filter(Contract.name.ilike(f'%{filters.name}%'))
     if filters.start_date is not None:
@@ -35,12 +37,20 @@ def get_contracts(
         data = session.execute(query).all()
 
     items = []
-    for contract_id, contract_name, contract_start_date, contract_finish_date in data:
+    for row in data:
         item = {
-            'id': contract_id,
-            'name': contract_name,
-            'start_date': contract_start_date,
-            'finish_date': contract_finish_date,
+            'id': row[0],
+            'name': row[1],
+            'start_date': row[2],
+            'finish_date': row[3],
+            'chief': {
+                'id': row[4],
+                'name': row[5]
+            },
+            'group': {
+                'id': row[6],
+                'name': row[7]
+            }
         }
         items.append(item)
 

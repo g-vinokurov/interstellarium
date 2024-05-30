@@ -11,8 +11,6 @@ from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy import ForeignKeyConstraint
 from sqlalchemy import UniqueConstraint
 
-from sqlalchemy.orm import relationship
-
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
