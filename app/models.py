@@ -153,6 +153,7 @@ class Contract(Base):
     __tablename__ = 'contracts'
 
     id = Column(Integer, autoincrement=True)
+    name = Column(String(512), nullable=True)
     chief_id = Column(Integer, nullable=True)
     group_id = Column(Integer, nullable=True)
 
@@ -182,6 +183,7 @@ class Project(Base):
     __tablename__ = 'projects'
 
     id = Column(Integer, autoincrement=True)
+    name = Column(String(512), nullable=True)
     chief_id = Column(Integer, nullable=True)
     group_id = Column(Integer, nullable=True)
 
@@ -237,6 +239,7 @@ class Equipment(Base):
     __tablename__ = 'equipment'
 
     id = Column(Integer, autoincrement=True)
+    name = Column(String(512), nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='equipment_pk'),
@@ -247,6 +250,7 @@ class Work(Base):
     __tablename__ = 'works'
 
     id = Column(Integer, autoincrement=True)
+    name = Column(String(512), nullable=True)
     association_contract_project_id = Column(Integer, nullable=True)
     cost = Column(Double, nullable=False, default=0.0)
 
@@ -266,6 +270,7 @@ class Group(Base):
     __tablename__ = 'groups'
 
     id = Column(Integer, autoincrement=True)
+    name = Column(String(512), nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='group_pk'),
