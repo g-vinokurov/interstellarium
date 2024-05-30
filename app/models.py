@@ -268,8 +268,9 @@ class Work(Base):
 
     id = Column(Integer, autoincrement=True)
     name = Column(String(512), nullable=True)
-    association_contract_project_id = Column(Integer, nullable=True)
     cost = Column(Double, nullable=False, default=0.0)
+
+    association_contract_project_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
