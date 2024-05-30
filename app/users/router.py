@@ -14,7 +14,10 @@ router = APIRouter(tags=['users'])
 
 
 @router.post('/api/users', response_model=list[schema.User])
-def get_all_users(filters: schema.UserFilters, current_user: User = Depends(get_current_user)):
+def get_users(
+    filters: schema.UserFilters,
+    current_user: User = Depends(get_current_user)
+):
     query = select(User.id, User.name, Department.id, Department.name)
     query = query.join(Department, Department.id == User.department_id, isouter=True)
     if filters.name is not None and len(filters.name) != 0:
@@ -45,7 +48,10 @@ def get_all_users(filters: schema.UserFilters, current_user: User = Depends(get_
 
 
 @router.post('/api/users/create', response_model=schema.CreateUserResponse, status_code=status.HTTP_201_CREATED)
-def create_user(request: schema.CreateUserRequest, current_user: User = Depends(get_current_user)):
+def create_user(
+    request: schema.CreateUserRequest,
+    current_user: User = Depends(get_current_user)
+):
     if not current_user.is_admin and not current_user.is_superuser:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -77,4 +83,5 @@ def create_user(request: schema.CreateUserRequest, current_user: User = Depends(
 
         user_id = user.id
 
-    return JSONResponse({'id': user_id}, status_code=status.HTTP_201_CREATED)
+    item = {'id': user_id}
+    return JSONResponse(item, status_code=status.HTTP_201_CREATED)
