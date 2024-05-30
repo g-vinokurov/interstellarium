@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS contracts
+    DROP COLUMN IF EXISTS start_date;

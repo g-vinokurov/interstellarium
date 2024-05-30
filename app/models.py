@@ -156,6 +156,9 @@ class Contract(Base):
     chief_id = Column(Integer, nullable=True)
     group_id = Column(Integer, nullable=True)
 
+    start_date = Column(Date, nullable=True)
+    finish_date = Column(Date, nullable=True)
+
     __table_args__ = (
         PrimaryKeyConstraint('id', name='contract_pk'),
         ForeignKeyConstraint(
@@ -181,6 +184,9 @@ class Project(Base):
     id = Column(Integer, autoincrement=True)
     chief_id = Column(Integer, nullable=True)
     group_id = Column(Integer, nullable=True)
+
+    start_date = Column(Date, nullable=True)
+    finish_date = Column(Date, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='project_pk'),
@@ -243,7 +249,7 @@ class Work(Base):
     id = Column(Integer, autoincrement=True)
     association_contract_project_id = Column(Integer, nullable=True)
     cost = Column(Double, nullable=False, default=0.0)
-    
+
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
         ForeignKeyConstraint(

@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS projects
+    ADD COLUMN IF NOT EXISTS finish_date DATE NULL;

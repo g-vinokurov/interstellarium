@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS contracts
+    ADD COLUMN IF NOT EXISTS start_date DATE NULL;
