@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import Column
+from sqlalchemy import Table
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Boolean
@@ -169,6 +170,32 @@ class Project(Base):
     )
 
 
+class AssociationContractProject(Base):
+    __tablename__ = 'associations_contract_project'
+
+    id = Column(Integer, autoincrement=True)
+    contract_id = Column(Integer, nullable=False)
+    project_id = Column(Integer, nullable=False)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='association_contract_project_pk'),
+        ForeignKeyConstraint(
+            ['contract_id'],
+            ['contracts.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='association_contract_project_contract_fk'
+        ),
+        ForeignKeyConstraint(
+            ['project_id'],
+            ['projects.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='association_contract_project_project_fk'
+        ),
+    )
+
+
 class Equipment(Base):
     __tablename__ = 'equipment'
 
@@ -197,3 +224,5 @@ class Group(Base):
     __table_args__ = (
         PrimaryKeyConstraint('id', name='group_pk'),
     )
+
+
