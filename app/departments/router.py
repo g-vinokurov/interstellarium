@@ -15,8 +15,8 @@ router = APIRouter(tags=['departments'])
 
 @router.post('/api/departments', response_model=list[schema.Department])
 def get_departments(
-        filters: schema.DepartmentFilters,
-        current_user: User = Depends(get_current_user)
+    filters: schema.DepartmentFilters,
+    current_user: User = Depends(get_current_user)
 ):
     query = select(Department.id, Department.name, User.id, User.name)
     query = query.join(User, User.id == Department.chief_id, isouter=True)
@@ -42,7 +42,7 @@ def get_departments(
 
 
 @router.post('/api/departments/create', response_model=schema.CreateDepartmentResponse, status_code=status.HTTP_201_CREATED)
-def create_user(
+def create_department(
     request: schema.CreateDepartmentRequest,
     current_user: User = Depends(get_current_user)
 ):
