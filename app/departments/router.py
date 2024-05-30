@@ -18,7 +18,12 @@ def get_departments(
     filters: schema.DepartmentFilters,
     current_user: User = Depends(get_current_user)
 ):
-    query = select(Department.id, Department.name, User.id, User.name)
+    query = select(
+        Department.id,
+        Department.name,
+        User.id,
+        User.name
+    )
     query = query.join(User, User.id == Department.chief_id, isouter=True)
     if filters.name is not None and len(filters.name) != 0:
         query = query.filter(Department.name.ilike(f'%{filters.name}%'))
@@ -27,13 +32,13 @@ def get_departments(
         data = session.execute(query).all()
 
     items = []
-    for department_id, department_name, chief_id, chief_name in data:
+    for row in data:
         item = {
-            'id': department_id,
-            'name': department_name,
+            'id': row[0],
+            'name': row[1],
             'chief': {
-                'id': chief_id,
-                'name': chief_name,
+                'id': row[2],
+                'name': row[3],
             }
         }
         items.append(item)

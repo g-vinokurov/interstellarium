@@ -18,7 +18,12 @@ def get_users(
     filters: schema.UserFilters,
     current_user: User = Depends(get_current_user)
 ):
-    query = select(User.id, User.name, Department.id, Department.name)
+    query = select(
+        User.id,
+        User.name,
+        Department.id,
+        Department.name
+    )
     query = query.join(Department, Department.id == User.department_id, isouter=True)
     if filters.name is not None and len(filters.name) != 0:
         query = query.filter(User.name.ilike(f'%{filters.name}%'))
@@ -33,13 +38,13 @@ def get_users(
         data = session.execute(query).all()
 
     items = []
-    for user_id, user_name, department_id, department_name in data:
+    for row in data:
         item = {
-            'id': user_id,
-            'name': user_name,
+            'id': row[0],
+            'name': row[1],
             'department': {
-                'id': department_id,
-                'name': department_name,
+                'id': row[2],
+                'name': row[3],
             }
         }
         items.append(item)
