@@ -145,7 +145,8 @@ class Department(Base):
             name='department_chief_user_fk'
         ),
         PrimaryKeyConstraint('id', name='department_pk'),
-        UniqueConstraint('chief_id', name='department_chief_unique')
+        UniqueConstraint('chief_id', name='department_chief_unique'),
+        UniqueConstraint('name', name='department_name_unique')
     )
 
 
