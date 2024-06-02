@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Optional
+from datetime import date
+
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
@@ -13,9 +16,12 @@ from app.users import schema
 router = APIRouter(tags=['users'])
 
 
-@router.post('/api/users', response_model=list[schema.User])
+@router.get('/api/users', response_model=list[schema.User])
 def get_users(
-    filters: schema.UserFilters,
+    name: Optional[str] = None,
+    birthdate_from: Optional[date] = None,
+    birthdate_to: Optional[date] = None,
+    department_id: Optional[int] = None,
     current_user: User = Depends(get_current_user)
 ):
     query = select(
@@ -24,15 +30,19 @@ def get_users(
         Department.id,
         Department.name
     )
-    query = query.join(Department, Department.id == User.department_id, isouter=True)
-    if filters.name is not None and len(filters.name) != 0:
-        query = query.filter(User.name.ilike(f'%{filters.name}%'))
-    if filters.birthdate_to is not None:
-        query = query.filter(User.birthdate <= filters.birthdate_to)
-    if filters.birthdate_from is not None:
-        query = query.filter(User.birthdate >= filters.birthdate_from)
-    if filters.department_id is not None:
-        query = query.filter(User.department_id == filters.department_id)
+    query = query.join(
+        Department,
+        Department.id == User.department_id,
+        isouter=True
+    )
+    if name is not None and len(name) != 0:
+        query = query.filter(User.name.ilike(f'%{name}%'))
+    if birthdate_to is not None:
+        query = query.filter(User.birthdate <= birthdate_to)
+    if birthdate_from is not None:
+        query = query.filter(User.birthdate >= birthdate_from)
+    if department_id is not None:
+        query = query.filter(User.department_id == department_id)
 
     with db.Session() as session:
         data = session.execute(query).all()
@@ -49,18 +59,22 @@ def get_users(
         }
         items.append(item)
 
-    return items
+    return JSONResponse(items, status.HTTP_200_OK)
 
 
-@router.post('/api/users/create', response_model=schema.CreateUserResponse, status_code=status.HTTP_201_CREATED)
+@router.post('/api/users', status_code=status.HTTP_201_CREATED, responses={
+    201: {'model': schema.HTTP_201_Response},
+    400: {'model': schema.HTTP_400_Response},
+    401: {'model': schema.HTTP_401_Response},
+    403: {'model': schema.HTTP_403_Response},
+})
 def create_user(
     request: schema.CreateUserRequest,
     current_user: User = Depends(get_current_user)
 ):
     if not current_user.is_admin and not current_user.is_superuser:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Access denied'
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
         )
 
     with db.Session() as session:
@@ -69,9 +83,8 @@ def create_user(
         ).scalar_one_or_none()
 
     if user is not None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail='User exists'
+        return JSONResponse(
+            {'msg': 'user exists'}, status.HTTP_400_BAD_REQUEST
         )
 
     user = User()
@@ -88,5 +101,4 @@ def create_user(
 
         user_id = user.id
 
-    item = {'id': user_id}
-    return JSONResponse(item, status_code=status.HTTP_201_CREATED)
+    return JSONResponse({'id': user_id}, status.HTTP_201_CREATED)

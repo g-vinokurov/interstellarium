@@ -5,6 +5,8 @@ from . import models
 from . import db
 from . import utils
 
+from . import schema
+
 from . import auth
 from . import users
 from . import departments

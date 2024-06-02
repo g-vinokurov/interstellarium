@@ -5,6 +5,11 @@ from typing import Optional
 from datetime import date
 from pydantic import BaseModel
 
+from app.schema import HTTP_400_Response
+from app.schema import HTTP_401_Response
+from app.schema import HTTP_403_Response
+from app.schema import HTTP_404_Response
+
 
 class Department(BaseModel):
     id: Optional[int] = None
@@ -17,13 +22,6 @@ class User(BaseModel):
     department: Department
 
 
-class UserFilters(BaseModel):
-    name: Optional[str] = None
-    birthdate_from: Optional[date] = None
-    birthdate_to: Optional[date] = None
-    department_id: Optional[int] = None
-
-
 class CreateUserRequest(BaseModel):
     email: str
     password: str
@@ -32,5 +30,5 @@ class CreateUserRequest(BaseModel):
     birthdate: Optional[date] = None
 
 
-class CreateUserResponse(BaseModel):
+class HTTP_201_Response(BaseModel):
     id: int
