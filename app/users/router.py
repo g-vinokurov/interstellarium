@@ -18,6 +18,7 @@ router = APIRouter(tags=['users'])
 
 @router.get('/api/users', response_model=list[schema.User])
 def get_users(
+    id: Optional[int] = None,
     name: Optional[str] = None,
     birthdate_from: Optional[date] = None,
     birthdate_to: Optional[date] = None,
@@ -35,6 +36,8 @@ def get_users(
         Department.id == User.department_id,
         isouter=True
     )
+    if id is not None:
+        query = query.filter(User.id == id)
     if name is not None and len(name) != 0:
         query = query.filter(User.name.ilike(f'%{name}%'))
     if birthdate_to is not None:
@@ -102,3 +105,8 @@ def create_user(
         user_id = user.id
 
     return JSONResponse({'id': user_id}, status.HTTP_201_CREATED)
+
+
+@router.get('/api/users/{id}', response_model=list[schema.UserProfile])
+def get_user(id: int, current_user: User = Depends(get_current_user)):
+    pass

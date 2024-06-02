@@ -32,3 +32,7 @@ class CreateUserRequest(BaseModel):
 
 class HTTP_201_Response(BaseModel):
     id: int
+
+
+class UserProfile(BaseModel):
+    pass
