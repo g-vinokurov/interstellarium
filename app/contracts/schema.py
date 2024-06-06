@@ -5,6 +5,12 @@ from typing import Optional
 from datetime import date
 from pydantic import BaseModel
 
+from app.schema import BadRequestError
+from app.schema import UnauthorizedError
+from app.schema import ForbiddenError
+from app.schema import NotFoundError
+from app.schema import CreatedResponse
+
 
 class Chief(BaseModel):
     id: Optional[int] = None
@@ -25,17 +31,11 @@ class Contract(BaseModel):
     group: Group
 
 
-class ContractFilters(BaseModel):
-    name: Optional[str] = None
-    start_date: Optional[date] = None
-    finish_date: Optional[date] = None
-
-
 class CreateContractRequest(BaseModel):
     name: str
     start_date: Optional[date] = None
     finish_date: Optional[date] = None
 
 
-class CreateContractResponse(BaseModel):
-    id: int
+class ContractProfile(BaseModel):
+    pass
