@@ -4,13 +4,15 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from app.schema import BadRequestError
+from app.schema import UnauthorizedError
+from app.schema import ForbiddenError
+from app.schema import NotFoundError
+from app.schema import CreatedResponse
+
 
 class Group(BaseModel):
     id: int
-    name: Optional[str] = None
-
-
-class GroupFilters(BaseModel):
     name: Optional[str] = None
 
 
@@ -18,5 +20,5 @@ class CreateGroupRequest(BaseModel):
     name: str
 
 
-class CreateGroupResponse(BaseModel):
-    id: int
+class GroupProfile(BaseModel):
+    pass

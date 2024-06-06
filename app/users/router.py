@@ -17,7 +17,7 @@ router = APIRouter(tags=['users'])
 
 
 @router.get('/api/users', response_model=list[schema.User])
-def get_users(
+def api_users_get_all(
     id: Optional[int] = None,
     name: Optional[str] = None,
     birthdate_from: Optional[date] = None,
@@ -66,12 +66,12 @@ def get_users(
 
 
 @router.post('/api/users', status_code=status.HTTP_201_CREATED, responses={
-    201: {'model': schema.HTTP_201_Response},
+    201: {'model': schema.CreatedResponse},
     400: {'model': schema.BadRequestError},
     401: {'model': schema.UnauthorizedError},
     403: {'model': schema.ForbiddenError},
 })
-def create_user(
+def api_users_create(
     request: schema.CreateUserRequest,
     current_user: User = Depends(get_current_user)
 ):
@@ -108,5 +108,5 @@ def create_user(
 
 
 @router.get('/api/users/{id}', response_model=list[schema.UserProfile])
-def get_user(id: int, current_user: User = Depends(get_current_user)):
+def api_users_get_one(id: int, current_user: User = Depends(get_current_user)):
     pass

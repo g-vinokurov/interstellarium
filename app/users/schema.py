@@ -9,6 +9,7 @@ from app.schema import BadRequestError
 from app.schema import UnauthorizedError
 from app.schema import ForbiddenError
 from app.schema import NotFoundError
+from app.schema import CreatedResponse
 
 
 class Department(BaseModel):
@@ -28,10 +29,6 @@ class CreateUserRequest(BaseModel):
     is_admin: Optional[bool] = False
     name: str
     birthdate: Optional[date] = None
-
-
-class HTTP_201_Response(BaseModel):
-    id: int
 
 
 class UserProfile(BaseModel):

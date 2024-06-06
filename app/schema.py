@@ -21,3 +21,7 @@ class ForbiddenError(ErrorResponse):
 
 class NotFoundError(ErrorResponse):
     pass
+
+
+class CreatedResponse(BaseModel):
+    id: int
