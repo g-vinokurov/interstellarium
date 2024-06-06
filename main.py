@@ -14,12 +14,12 @@ from app.works.router import router as works_router
 
 app = FastAPI()
 
-# TODO: it must be confiured more carefully
+# TODO: it must be configured more carefully
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=['*'],
+    allow_headers=['*'],
 )
 
 app.include_router(auth_router)

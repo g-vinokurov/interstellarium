@@ -5,10 +5,10 @@ from typing import Optional
 from datetime import date
 from pydantic import BaseModel
 
-from app.schema import HTTP_400_Response
-from app.schema import HTTP_401_Response
-from app.schema import HTTP_403_Response
-from app.schema import HTTP_404_Response
+from app.schema import BadRequestError
+from app.schema import UnauthorizedError
+from app.schema import ForbiddenError
+from app.schema import NotFoundError
 
 
 class Department(BaseModel):

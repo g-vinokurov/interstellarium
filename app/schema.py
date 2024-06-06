@@ -7,17 +7,17 @@ class ErrorResponse(BaseModel):
     msg: str
 
 
-class HTTP_400_Response(ErrorResponse):
+class BadRequestError(ErrorResponse):
     pass
 
 
-class HTTP_401_Response(ErrorResponse):
+class UnauthorizedError(ErrorResponse):
     pass
 
 
-class HTTP_403_Response(ErrorResponse):
+class ForbiddenError(ErrorResponse):
     pass
 
 
-class HTTP_404_Response(ErrorResponse):
+class NotFoundError(ErrorResponse):
     pass

@@ -67,9 +67,9 @@ def get_users(
 
 @router.post('/api/users', status_code=status.HTTP_201_CREATED, responses={
     201: {'model': schema.HTTP_201_Response},
-    400: {'model': schema.HTTP_400_Response},
-    401: {'model': schema.HTTP_401_Response},
-    403: {'model': schema.HTTP_403_Response},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
 })
 def create_user(
     request: schema.CreateUserRequest,
