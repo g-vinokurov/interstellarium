@@ -4,6 +4,12 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from app.schema import BadRequestError
+from app.schema import UnauthorizedError
+from app.schema import ForbiddenError
+from app.schema import NotFoundError
+from app.schema import CreatedResponse
+
 
 class Chief(BaseModel):
     id: Optional[int] = None
@@ -16,13 +22,9 @@ class Department(BaseModel):
     chief: Chief
 
 
-class DepartmentFilters(BaseModel):
-    name: Optional[str] = None
-
-
 class CreateDepartmentRequest(BaseModel):
     name: str
 
 
-class CreateDepartmentResponse(BaseModel):
-    id: int
+class DepartmentProfile(BaseModel):
+    pass
