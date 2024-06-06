@@ -64,7 +64,7 @@ def api_groups_create(
 
     if group is not None:
         return JSONResponse(
-            {'msg': 'group exists'}, status.HTTP_400_BAD_REQUEST
+            {'msg': 'item exists'}, status.HTTP_400_BAD_REQUEST
         )
 
     group = Group()

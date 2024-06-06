@@ -4,6 +4,12 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from app.schema import BadRequestError
+from app.schema import UnauthorizedError
+from app.schema import ForbiddenError
+from app.schema import NotFoundError
+from app.schema import CreatedResponse
+
 
 class Contract(BaseModel):
     id: Optional[int] = None
@@ -23,16 +29,10 @@ class Work(BaseModel):
     project: Project
 
 
-class WorkFilters(BaseModel):
-    name: Optional[str] = None
-    min_cost: Optional[float] = None
-    max_cost: Optional[float] = None
-
-
 class CreateWorkRequest(BaseModel):
     name: str
     cost: float = 0.0
 
 
-class CreateWorkResponse(BaseModel):
-    id: int
+class WorkProfile(BaseModel):
+    pass

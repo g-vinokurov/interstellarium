@@ -87,7 +87,7 @@ def api_users_create(
 
     if user is not None:
         return JSONResponse(
-            {'msg': 'user exists'}, status.HTTP_400_BAD_REQUEST
+            {'msg': 'item exists'}, status.HTTP_400_BAD_REQUEST
         )
 
     user = User()
