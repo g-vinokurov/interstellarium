@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Optional
+
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
@@ -13,9 +15,10 @@ from app.equipment import schema
 router = APIRouter(tags=['equipment'])
 
 
-@router.post('/api/equipment', response_model=list[schema.Equipment])
-def get_equipment(
-    filters: schema.EquipmentFilters,
+@router.get('/api/equipment', response_model=list[schema.Equipment])
+def api_equipment_get_all(
+    id: Optional[int] = None,
+    name: Optional[str] = None,
     current_user: User = Depends(get_current_user)
 ):
     query = select(
@@ -26,10 +29,18 @@ def get_equipment(
         Group.id,
         Group.name
     )
-    query = query.join(Department, Department.id == Equipment.department_id, isouter=True)
-    query = query.join(Group, Group.id == Equipment.group_id, isouter=True)
-    if filters.name is not None and len(filters.name) != 0:
-        query = query.filter(Equipment.name.ilike(f'%{filters.name}%'))
+    query = query.join(
+        Department,
+        Department.id == Equipment.department_id,
+        isouter=True
+    )
+    query = query.join(
+        Group,
+        Group.id == Equipment.group_id,
+        isouter=True
+    )
+    if name is not None and len(name) != 0:
+        query = query.filter(Equipment.name.ilike(f'%{name}%'))
 
     with db.Session() as session:
         data = session.execute(query).all()
@@ -53,15 +64,19 @@ def get_equipment(
     return items
 
 
-@router.post('/api/equipment/create', response_model=schema.CreateEquipmentResponse, status_code=status.HTTP_201_CREATED)
-def create_equipment(
+@router.post('/api/equipment', status_code=status.HTTP_201_CREATED, responses={
+    201: {'model': schema.CreatedResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+})
+def api_equipment_create(
     request: schema.CreateEquipmentRequest,
     current_user: User = Depends(get_current_user)
 ):
     if not current_user.is_admin and not current_user.is_superuser:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Access denied'
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
         )
 
     with db.Session() as session:
@@ -70,9 +85,8 @@ def create_equipment(
         ).scalar_one_or_none()
 
     if equipment is not None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail='Equipment exists'
+        return JSONResponse(
+            {'msg': 'item exists'}, status.HTTP_400_BAD_REQUEST
         )
 
     equipment = Equipment()
@@ -84,5 +98,9 @@ def create_equipment(
 
         equipment_id = equipment.id
 
-    item = {'id': equipment_id}
-    return JSONResponse(item, status_code=status.HTTP_201_CREATED)
+    return JSONResponse({'id': equipment_id}, status.HTTP_201_CREATED)
+
+
+@router.get('/api/equipment/{id}', response_model=list[schema.EquipmentProfile])
+def api_equipment_get_one(id: int, current_user: User = Depends(get_current_user)):
+    pass

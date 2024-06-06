@@ -4,6 +4,12 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from app.schema import BadRequestError
+from app.schema import UnauthorizedError
+from app.schema import ForbiddenError
+from app.schema import NotFoundError
+from app.schema import CreatedResponse
+
 
 class Department(BaseModel):
     id: Optional[int] = None
@@ -30,5 +36,5 @@ class CreateEquipmentRequest(BaseModel):
     name: str
 
 
-class CreateEquipmentResponse(BaseModel):
-    id: int
+class EquipmentProfile(BaseModel):
+    pass
