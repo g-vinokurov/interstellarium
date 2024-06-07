@@ -8,7 +8,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
 from app.db import db
-from app.models import User, Group, Contract
+from app.models import User, Group, Contract, Project, Work
+from app.models import AssociationContractProject
 
 from app.auth import get_current_user
 from app.contracts import schema
@@ -120,6 +121,127 @@ def api_contracts_create(
     return JSONResponse({'id': contract_id}, status.HTTP_201_CREATED)
 
 
-@router.get('/api/contracts/{id}', response_model=list[schema.ContractProfile])
-def api_contracts_get_one(id: int, current_user: User = Depends(get_current_user)):
-    pass
+@router.get('/api/contracts/{id}', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.ContractProfile},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_contracts_get_one(
+    id: int,
+    current_user: User = Depends(get_current_user)
+):
+    query = select(
+        Contract.id,
+        Contract.name,
+        Contract.start_date,
+        Contract.finish_date,
+        User.id,
+        User.name,
+        Group.id,
+        Group.name
+    )
+    query = query.join(
+        User,
+        User.id == Contract.chief_id,
+        isouter=True
+    )
+    query = query.join(
+        Group,
+        Group.id == Contract.group_id,
+        isouter=True
+    )
+    query = query.where(Contract.id == id)
+
+    with db.Session() as session:
+        contract_data = session.execute(query).first()
+
+    if contract_data is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    contract_id, contract_name = contract_data[0:2]
+    contract_start_date, contract_finish_date = contract_data[2:4]
+    chief_id, chief_name, group_id, group_name = contract_data[4:8]
+
+    query = select(
+        Project.id,
+        Project.name
+    )
+    query = query.join(
+        AssociationContractProject,
+        AssociationContractProject.project_id == Project.id,
+        isouter=False
+    )
+    query = query.join(
+        Contract,
+        Contract.id == AssociationContractProject.contract_id,
+        isouter=False
+    )
+    query = query.where(Contract.id == contract_id)
+
+    with db.Session() as session:
+        projects_data = session.execute(query).all()
+
+    query = select(
+        Work.id,
+        Work.name,
+        Work.cost,
+    )
+    query = query.join(
+        AssociationContractProject,
+        AssociationContractProject.id == Work.association_contract_project_id,
+        isouter=False
+    )
+    query = query.join(
+        Contract,
+        Contract.id == AssociationContractProject.contract_id,
+        isouter=False
+    )
+    query = query.join(
+        Project,
+        Project.id == AssociationContractProject.project_id,
+        isouter=False
+    )
+    query = query.where(Contract.id == contract_id)
+
+    with db.Session() as session:
+        works_data = session.execute(query).all()
+
+    projects = []
+    for row in projects_data:
+        item = {
+            'id': row[0],
+            'name': row[1]
+        }
+        projects.append(item)
+
+    works = []
+    for row in works_data:
+        item = {
+            'id': row[0],
+            'name': row[1],
+            'cost': row[2]
+        }
+        works.append(item)
+
+    response = {
+        'id': contract_id,
+        'name': contract_name,
+        'start_date': str(contract_start_date),
+        'finish_date': str(contract_finish_date),
+        'chief': {
+            'id': chief_id,
+            'name': chief_name
+        },
+        'group': {
+            'id': group_id,
+            'name': group_name
+        },
+        'projects': projects,
+        'works': works
+    }
+
+    return JSONResponse(response, status.HTTP_200_OK)

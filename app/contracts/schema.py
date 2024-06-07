@@ -22,6 +22,17 @@ class Group(BaseModel):
     name: Optional[str] = None
 
 
+class Project(BaseModel):
+    id: int
+    name: Optional[str] = None
+
+
+class Work(BaseModel):
+    id: int
+    name: Optional[str] = None
+    cost: float = 0.0
+
+
 class Contract(BaseModel):
     id: int
     name: Optional[str] = None
@@ -38,4 +49,11 @@ class CreateContractRequest(BaseModel):
 
 
 class ContractProfile(BaseModel):
-    pass
+    id: int
+    name: Optional[str] = None
+    start_date: Optional[str] = None
+    finish_date: Optional[str] = None
+    chief: Chief
+    group: Group
+    projects: list[Project]
+    works: list[Work]
