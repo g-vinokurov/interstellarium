@@ -11,6 +11,16 @@ from app.schema import NotFoundError
 from app.schema import CreatedResponse
 
 
+class User(BaseModel):
+    id: int
+    name: Optional[str] = None
+
+
+class Equipment(BaseModel):
+    id: int
+    name: Optional[str] = None
+
+
 class Chief(BaseModel):
     id: Optional[int] = None
     name: Optional[str] = None
@@ -27,4 +37,8 @@ class CreateDepartmentRequest(BaseModel):
 
 
 class DepartmentProfile(BaseModel):
-    pass
+    id: int
+    name: Optional[str] = None
+    chief: Chief
+    users: list[User]
+    equipment: list[Equipment]
