@@ -227,11 +227,16 @@ def api_projects_get_one(
         }
         works.append(item)
 
+    if project_start_date is not None:
+        project_start_date = str(project_start_date)
+    if project_finish_date is not None:
+        project_finish_date = str(project_finish_date)
+
     response = {
         'id': project_id,
         'name': project_name,
-        'start_date': str(project_start_date),
-        'finish_date': str(project_finish_date),
+        'start_date': project_start_date,
+        'finish_date': project_finish_date,
         'chief': {
             'id': chief_id,
             'name': chief_name

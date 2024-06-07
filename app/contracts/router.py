@@ -227,11 +227,16 @@ def api_contracts_get_one(
         }
         works.append(item)
 
+    if contract_start_date is not None:
+        contract_start_date = str(contract_start_date)
+    if contract_finish_date is not None:
+        contract_finish_date = str(contract_finish_date)
+
     response = {
         'id': contract_id,
         'name': contract_name,
-        'start_date': str(contract_start_date),
-        'finish_date': str(contract_finish_date),
+        'start_date': contract_start_date,
+        'finish_date': contract_finish_date,
         'chief': {
             'id': chief_id,
             'name': chief_name
