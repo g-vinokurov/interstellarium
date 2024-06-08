@@ -11,7 +11,6 @@ from sqlalchemy import PrimaryKeyConstraint
 from sqlalchemy import ForeignKeyConstraint
 from sqlalchemy import UniqueConstraint
 
-from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
@@ -20,7 +19,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class User(Base, UserMixin):
+class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, autoincrement=True)
