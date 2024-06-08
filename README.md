@@ -1,4 +1,4 @@
-# Interstellarium
+# Interstellarium Backend
 
 ## Project installation and launch
 #### 1. Clone repository
