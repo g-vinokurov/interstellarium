@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
 from app.db import db
-from app.models import User, Work, Contract, Project
+from app.models import User, Work, Contract, Project, Group
 from app.models import AssociationContractProject
 
 from app.auth import get_current_user
@@ -116,6 +116,78 @@ def api_works_create(
     return JSONResponse({'id': work_id}, status.HTTP_201_CREATED)
 
 
-@router.get('/api/works/{id}', response_model=list[schema.WorkProfile])
-def api_works_get_one(id: int, current_user: User = Depends(get_current_user)):
-    pass
+@router.get('/api/works/{id}', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.WorkProfile},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_works_get_one(
+    id: int,
+    current_user: User = Depends(get_current_user)
+):
+    query = select(
+        Work.id,
+        Work.name,
+        Work.cost,
+        Contract.id,
+        Contract.name,
+        Project.id,
+        Project.name,
+        Group.id,
+        Group.name
+    )
+    query = query.join(
+        AssociationContractProject,
+        AssociationContractProject.id == Work.association_contract_project_id,
+        isouter=True
+    )
+    query = query.join(
+        Contract,
+        Contract.id == AssociationContractProject.contract_id,
+        isouter=True
+    )
+    query = query.join(
+        Project,
+        Project.id == AssociationContractProject.project_id,
+        isouter=True
+    )
+    query = query.join(
+        Group,
+        Group.id == Work.executor_id,
+        isouter=True
+    )
+    query = query.where(Work.id == id)
+
+    with db.Session() as session:
+        work_data = session.execute(query).first()
+
+    if work_data is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    work_id, work_name, work_cost = work_data[0:3]
+    contract_id, contract_name = work_data[3:5]
+    project_id, project_name = work_data[5:7]
+    group_id, group_name = work_data[7:9]
+
+    response = {
+        'id': work_id,
+        'name': work_name,
+        'cost': work_cost,
+        'contract': {
+            'id': contract_id,
+            'name': contract_name
+        },
+        'project': {
+            'id': project_id,
+            'name': project_name
+        },
+        'executor': {
+            'id': group_id,
+            'name': group_name
+        },
+    }
+    return JSONResponse(response, status.HTTP_200_OK)

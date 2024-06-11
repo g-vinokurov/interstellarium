@@ -21,6 +21,11 @@ class Project(BaseModel):
     name: Optional[str] = None
 
 
+class Executor(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+
 class Work(BaseModel):
     id: int
     name: Optional[str] = None
@@ -35,4 +40,9 @@ class CreateWorkRequest(BaseModel):
 
 
 class WorkProfile(BaseModel):
-    pass
+    id: int
+    name: Optional[str] = None
+    cost: float = 0.0
+    contract: Contract
+    project: Project
+    executor: Executor
