@@ -327,6 +327,9 @@ class AssignmentUserProject(Base):
     user_id = Column(Integer, nullable=False)
     project_id = Column(Integer, nullable=False)
 
+    assignment_date = Column(Date, nullable=True)
+    is_assigned = Column(Boolean, nullable=True)
+
     __table_args__ = (
         PrimaryKeyConstraint('id', name='assignment_user_project_pk'),
         ForeignKeyConstraint(
