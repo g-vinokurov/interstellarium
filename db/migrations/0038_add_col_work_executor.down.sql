@@ -1,0 +1,3 @@
+ALTER TABLE IF EXISTS works
+    DROP CONSTRAINT IF EXISTS work_executor_fk,
+    DROP COLUMN IF EXISTS executor_id;

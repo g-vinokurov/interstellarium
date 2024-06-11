@@ -245,6 +245,8 @@ class Work(Base):
 
     association_contract_project_id = Column(Integer, nullable=True)
 
+    executor_id = Column(Integer, nullable=True)
+
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
         ForeignKeyConstraint(
@@ -253,6 +255,13 @@ class Work(Base):
             ondelete='SET NULL',
             onupdate='CASCADE',
             name='work_association_contract_project_fk'
+        ),
+        ForeignKeyConstraint(
+            ['executor_id'],
+            ['groups.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='work_executor_fk'
         ),
     )
 
