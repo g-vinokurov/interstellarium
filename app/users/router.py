@@ -153,7 +153,7 @@ def api_users_get_one(
     )
     query = query.join(
         AssociationUserGroup,
-        AssociationUserGroup.user_id == User.id,
+        AssociationUserGroup.group_id == Group.id,
         isouter=True
     )
     query = query.where(AssociationUserGroup.user_id == user_id)
@@ -236,6 +236,9 @@ def api_users_get_one(
             }
         }
         contracts_assignments.append(item)
+
+    if user_birthdate is not None:
+        user_birthdate = str(user_birthdate)
 
     response = {
         'id': user_id,
