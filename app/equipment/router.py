@@ -101,6 +101,15 @@ def api_equipment_create(
     return JSONResponse({'id': equipment_id}, status.HTTP_201_CREATED)
 
 
-@router.get('/api/equipment/{id}', response_model=list[schema.EquipmentProfile])
-def api_equipment_get_one(id: int, current_user: User = Depends(get_current_user)):
+@router.get('/api/equipment/{id}', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.EquipmentProfile},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_equipment_get_one(
+    id: int,
+    current_user: User = Depends(get_current_user)
+):
     pass

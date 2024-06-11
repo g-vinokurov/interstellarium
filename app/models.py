@@ -376,3 +376,61 @@ class AssignmentUserContract(Base):
             name='assignment_user_contract_contract_fk'
         ),
     )
+
+
+class AssignmentEquipmentDepartment(Base):
+    __tablename__ = 'assignments_equipment_department'
+
+    id = Column(Integer, autoincrement=True)
+    equipment_id = Column(Integer, nullable=False)
+    department_id = Column(Integer, nullable=False)
+
+    assignment_date = Column(Date, nullable=True)
+    is_assigned = Column(Boolean, nullable=True)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='assignment_equipment_department_pk'),
+        ForeignKeyConstraint(
+            ['equipment_id'],
+            ['equipment.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_equipment_department_equipment_fk'
+        ),
+        ForeignKeyConstraint(
+            ['department_id'],
+            ['departments.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_equipment_department_department_fk'
+        ),
+    )
+
+
+class AssignmentEquipmentGroup(Base):
+    __tablename__ = 'assignments_equipment_group'
+
+    id = Column(Integer, autoincrement=True)
+    equipment_id = Column(Integer, nullable=False)
+    group_id = Column(Integer, nullable=False)
+
+    assignment_date = Column(Date, nullable=True)
+    is_assigned = Column(Boolean, nullable=True)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='assignment_equipment_group_pk'),
+        ForeignKeyConstraint(
+            ['equipment_id'],
+            ['equipment.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_equipment_group_equipment_fk'
+        ),
+        ForeignKeyConstraint(
+            ['group_id'],
+            ['groups.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_equipment_group_group_fk'
+        ),
+    )
