@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS associations_contract_project;
+DROP TABLE IF EXISTS associations_user_group;

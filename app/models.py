@@ -318,3 +318,29 @@ class AssociationUserGroup(Base):
             name='association_user_group_group_fk'
         ),
     )
+
+
+class AssignmentUserProject(Base):
+    __tablename__ = 'assignments_user_project'
+
+    id = Column(Integer, autoincrement=True)
+    user_id = Column(Integer, nullable=False)
+    project_id = Column(Integer, nullable=False)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='assignment_user_project_pk'),
+        ForeignKeyConstraint(
+            ['user_id'],
+            ['users.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_user_project_user_fk'
+        ),
+        ForeignKeyConstraint(
+            ['project_id'],
+            ['projects.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_user_project_project_fk'
+        ),
+    )
