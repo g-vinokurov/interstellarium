@@ -347,3 +347,32 @@ class AssignmentUserProject(Base):
             name='assignment_user_project_project_fk'
         ),
     )
+
+
+class AssignmentUserContract(Base):
+    __tablename__ = 'assignments_user_contract'
+
+    id = Column(Integer, autoincrement=True)
+    user_id = Column(Integer, nullable=False)
+    contract_id = Column(Integer, nullable=False)
+
+    assignment_date = Column(Date, nullable=True)
+    is_assigned = Column(Boolean, nullable=True)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='assignment_user_contract_pk'),
+        ForeignKeyConstraint(
+            ['user_id'],
+            ['users.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_user_contract_user_fk'
+        ),
+        ForeignKeyConstraint(
+            ['contract_id'],
+            ['contracts.id'],
+            ondelete='CASCADE',
+            onupdate='CASCADE',
+            name='assignment_user_contract_contract_fk'
+        ),
+    )
