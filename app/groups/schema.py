@@ -11,6 +11,32 @@ from app.schema import NotFoundError
 from app.schema import CreatedResponse
 
 
+class User(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+
+class Work(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+    cost: Optional[float] = 0.0
+
+
+class Contract(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+
+class Project(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+
+class Equipment(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+
 class Group(BaseModel):
     id: int
     name: Optional[str] = None
@@ -21,4 +47,10 @@ class CreateGroupRequest(BaseModel):
 
 
 class GroupProfile(BaseModel):
-    pass
+    id: int
+    name: Optional[str] = None
+    users: list[User]
+    works: list[Work]
+    contracts: list[Contract]
+    projects: list[Project]
+    equipment: list[Equipment]
