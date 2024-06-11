@@ -8,6 +8,8 @@ from sqlalchemy import select
 
 from app.db import db
 from app.models import User, Equipment, Department, Group
+from app.models import AssignmentEquipmentDepartment
+from app.models import AssignmentEquipmentGroup
 
 from app.auth import get_current_user
 from app.equipment import schema
@@ -112,4 +114,122 @@ def api_equipment_get_one(
     id: int,
     current_user: User = Depends(get_current_user)
 ):
-    pass
+    query = select(
+        Equipment.id,
+        Equipment.name,
+        Department.id,
+        Department.name,
+        Group.id,
+        Group.name
+    )
+    query = query.join(
+        Department,
+        Department.id == Equipment.department_id,
+        isouter=True
+    )
+    query = query.join(
+        Group,
+        Group.id == Equipment.group_id,
+        isouter=True
+    )
+    query = query.where(Equipment.id == id)
+
+    with db.Session() as session:
+        equipment_data = session.execute(query).first()
+
+    if equipment_data is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    equipment_id, equipment_name = equipment_data[0:2]
+    department_id, department_name = equipment_data[2:4]
+    group_id, group_name = equipment_data[4:6]
+
+    query = select(
+        AssignmentEquipmentDepartment.id,
+        AssignmentEquipmentDepartment.assignment_date,
+        AssignmentEquipmentDepartment.is_assigned,
+        Department.id,
+        Department.name
+    )
+    query = query.join(
+        Department,
+        Department.id == AssignmentEquipmentDepartment.department_id,
+        isouter=True
+    )
+    query = query.where(
+        AssignmentEquipmentDepartment.equipment_id == equipment_id
+    )
+
+    with db.Session() as session:
+        departments_assignments_data = session.execute(query).all()
+
+    query = select(
+        AssignmentEquipmentGroup.id,
+        AssignmentEquipmentGroup.assignment_date,
+        AssignmentEquipmentGroup.is_assigned,
+        Group.id,
+        Group.name
+    )
+    query = query.join(
+        Group,
+        Group.id == AssignmentEquipmentGroup.group_id,
+        isouter=True
+    )
+    query = query.where(
+        AssignmentEquipmentGroup.equipment_id == equipment_id
+    )
+
+    with db.Session() as session:
+        groups_assignments_data = session.execute(query).all()
+
+    departments_assignments = []
+    for row in departments_assignments_data:
+        assignment_date = row[1]
+        if assignment_date is not None:
+            assignment_date = str(assignment_date)
+
+        item = {
+            'id': row[0],
+            'assignment_date': assignment_date,
+            'is_assigned': row[2],
+            'department': {
+                'id': row[3],
+                'name': row[4]
+            }
+        }
+        departments_assignments.append(item)
+
+    groups_assignments = []
+    for row in groups_assignments_data:
+        assignment_date = row[1]
+        if assignment_date is not None:
+            assignment_date = str(assignment_date)
+
+        item = {
+            'id': row[0],
+            'assignment_date': assignment_date,
+            'is_assigned': row[2],
+            'group': {
+                'id': row[3],
+                'name': row[4]
+            }
+        }
+        groups_assignments.append(item)
+
+    response = {
+        'id': equipment_id,
+        'name': equipment_name,
+        'department': {
+            'id': department_id,
+            'name': department_name
+        },
+        'group': {
+            'id': group_id,
+            'name': group_name
+        },
+        'departments_assignments': departments_assignments,
+        'groups_assignments': groups_assignments
+    }
+    return JSONResponse(response, status.HTTP_200_OK)

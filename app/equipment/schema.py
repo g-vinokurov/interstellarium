@@ -21,6 +21,20 @@ class Group(BaseModel):
     name: Optional[str] = None
 
 
+class DepartmentAssigment(BaseModel):
+    id: Optional[int] = None
+    assignment_date: Optional[str] = None
+    is_assigned: Optional[bool] = None
+    department: Department
+
+
+class GroupAssignment(BaseModel):
+    id: Optional[int] = None
+    assignment_date: Optional[str] = None
+    is_assigned: Optional[bool] = None
+    group: Group
+
+
 class Equipment(BaseModel):
     id: int
     name: Optional[str] = None
@@ -37,4 +51,9 @@ class CreateEquipmentRequest(BaseModel):
 
 
 class EquipmentProfile(BaseModel):
-    pass
+    id: int
+    name: Optional[str] = None
+    department: Department
+    group: Group
+    departments_assignments: list[DepartmentAssigment]
+    groups_assignments: list[GroupAssignment]
