@@ -265,7 +265,28 @@ def api_users_get_one(
 })
 def api_users_update_department(
     id: int,
-    department: schema.ID,
+    request: schema.DepartmentID,
     current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    user = session.query(User).get(id)
+    department = session.query(Department).get(request.id)
+
+    if user is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    if department is None:
+        user.department_id = None
+    else:
+        user.department_id = department.id
+
+    session.commit()
     return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)

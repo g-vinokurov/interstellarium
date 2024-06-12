@@ -4,10 +4,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class ID(BaseModel):
-    id: Optional[int] = None
-
-
 class MsgResponse(BaseModel):
     msg: str
 
