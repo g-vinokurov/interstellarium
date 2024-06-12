@@ -269,6 +269,7 @@ def api_equipment_update_department(
         unassignment.department_id = equipment.department_id
         unassignment.assignment_date = datetime.utcnow().date()
         unassignment.is_assigned = False
+
         session.add(unassignment)
         session.commit()
 
@@ -277,13 +278,15 @@ def api_equipment_update_department(
     else:
         equipment.department_id = department.id
 
-    assignment = AssignmentEquipmentDepartment()
-    assignment.equipment_id = equipment.id
-    assignment.department_id = equipment.department_id
-    assignment.assignment_date = datetime.utcnow().date()
-    assignment.is_assigned = True
+    if equipment.department_id is not None:
+        assignment = AssignmentEquipmentDepartment()
+        assignment.equipment_id = equipment.id
+        assignment.department_id = equipment.department_id
+        assignment.assignment_date = datetime.utcnow().date()
+        assignment.is_assigned = True
 
-    session.add(assignment)
+        session.add(assignment)
+
     session.commit()
     return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
 
@@ -321,6 +324,7 @@ def api_equipment_update_group(
         unassignment.group_id = equipment.group_id
         unassignment.assignment_date = datetime.utcnow().date()
         unassignment.is_assigned = False
+
         session.add(unassignment)
         session.commit()
 
@@ -329,12 +333,14 @@ def api_equipment_update_group(
     else:
         equipment.group_id = group.id
 
-    assignment = AssignmentEquipmentGroup()
-    assignment.equipment_id = equipment.id
-    assignment.group_id = equipment.group_id
-    assignment.assignment_date = datetime.utcnow().date()
-    assignment.is_assigned = True
+    if equipment.group_id is not None:
+        assignment = AssignmentEquipmentGroup()
+        assignment.equipment_id = equipment.id
+        assignment.group_id = equipment.group_id
+        assignment.assignment_date = datetime.utcnow().date()
+        assignment.is_assigned = True
 
-    session.add(assignment)
+        session.add(assignment)
+
     session.commit()
     return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
