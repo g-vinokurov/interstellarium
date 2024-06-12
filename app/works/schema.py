@@ -34,7 +34,7 @@ class Project(BaseModel):
     name: Optional[str] = None
 
 
-class Executor(BaseModel):
+class Group(BaseModel):
     id: Optional[int] = None
     name: Optional[str] = None
 
@@ -58,4 +58,4 @@ class WorkProfile(BaseModel):
     cost: float = 0.0
     contract: Contract
     project: Project
-    executor: Executor
+    group: Group

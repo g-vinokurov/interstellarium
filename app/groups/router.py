@@ -126,7 +126,7 @@ def api_groups_get_one(
         Work.name,
         Work.cost,
     )
-    query = query.where(Work.executor_id == group_id)
+    query = query.where(Work.group_id == group_id)
 
     with db.Session() as session:
         works_data = session.execute(query).all()

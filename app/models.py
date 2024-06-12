@@ -246,7 +246,7 @@ class Work(Base):
     contract_id = Column(Integer, nullable=True)
     project_id = Column(Integer, nullable=True)
 
-    executor_id = Column(Integer, nullable=True)
+    group_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
@@ -265,11 +265,11 @@ class Work(Base):
             name='work_project_fk'
         ),
         ForeignKeyConstraint(
-            ['executor_id'],
+            ['group_id'],
             ['groups.id'],
             ondelete='SET NULL',
             onupdate='CASCADE',
-            name='work_executor_fk'
+            name='work_group_fk'
         ),
     )
 

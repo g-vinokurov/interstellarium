@@ -1,0 +1,10 @@
+ALTER TABLE IF EXISTS works
+    ADD COLUMN IF NOT EXISTS group_id INTEGER NULL;
+
+ALTER TABLE IF EXISTS works
+    DROP CONSTRAINT IF EXISTS work_group_fk,
+    ADD CONSTRAINT work_group_fk
+        FOREIGN KEY (group_id)
+        REFERENCES groups (id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE;

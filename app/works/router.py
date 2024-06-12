@@ -144,7 +144,7 @@ def api_works_get_one(
     )
     query = query.join(
         Group,
-        Group.id == Work.executor_id,
+        Group.id == Work.group_id,
         isouter=True
     )
     query = query.where(Work.id == id)
@@ -174,7 +174,7 @@ def api_works_get_one(
             'id': project_id,
             'name': project_name
         },
-        'executor': {
+        'group': {
             'id': group_id,
             'name': group_name
         },
