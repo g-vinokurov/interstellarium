@@ -204,8 +204,6 @@ def api_departments_update_chief(
     if chief is None:
         department.chief_id = None
     else:
-        if chief.department_id != department.id:
-            chief.department_id = department.id
         department.chief_id = chief.id
 
     session.commit()
