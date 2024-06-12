@@ -245,3 +245,75 @@ def api_projects_get_one(
     }
 
     return JSONResponse(response, status.HTTP_200_OK)
+
+
+@router.put('/api/projects/{id}/chief', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_projects_update_chief(
+    id: int,
+    request: schema.UserID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    project = session.query(Project).get(id)
+    chief = session.query(User).get(request.id)
+
+    if project is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    if chief is None:
+        project.chief_id = None
+    else:
+        project.chief_id = chief.id
+
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/projects/{id}/group', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_projects_update_group(
+    id: int,
+    request: schema.GroupID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    project = session.query(Project).get(id)
+    group = session.query(Group).get(request.id)
+
+    if project is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    if group is None:
+        project.group_id = None
+    else:
+        project.group_id = group.id
+
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
