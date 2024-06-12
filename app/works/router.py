@@ -180,3 +180,117 @@ def api_works_get_one(
         },
     }
     return JSONResponse(response, status.HTTP_200_OK)
+
+
+@router.put('/api/works/{id}/contract', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_works_update_contract(
+    id: int,
+    request: schema.ContractID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    work = session.query(Work).get(id)
+    contract = session.query(Contract).get(request.id)
+
+    if work is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    # TODO: проверить доступ work.group к work.contract
+
+    if contract is None:
+        work.contract_id = None
+    else:
+        work.contract_id = contract.id
+
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/works/{id}/project', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_works_update_project(
+    id: int,
+    request: schema.ProjectID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    work = session.query(Work).get(id)
+    project = session.query(Project).get(request.id)
+
+    if work is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    # TODO: проверить доступ work.group к work.project
+
+    if project is None:
+        work.project_id = None
+    else:
+        work.project_id = project.id
+
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/works/{id}/group', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_works_update_group(
+    id: int,
+    request: schema.GroupID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    work = session.query(Work).get(id)
+    group = session.query(Group).get(request.id)
+
+    if work is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    # TODO: проверить доступ work.group к work.contract и work.project
+
+    if group is None:
+        work.group_id = None
+    else:
+        work.group_id = group.id
+
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)

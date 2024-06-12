@@ -9,6 +9,19 @@ from app.schema import UnauthorizedError
 from app.schema import ForbiddenError
 from app.schema import NotFoundError
 from app.schema import CreatedResponse
+from app.schema import OkResponse
+
+
+class ContractID(BaseModel):
+    id: Optional[int] = None
+
+
+class ProjectID(BaseModel):
+    id: Optional[int] = None
+
+
+class GroupID(BaseModel):
+    id: Optional[int] = None
 
 
 class Contract(BaseModel):
