@@ -9,28 +9,19 @@ ALTER TABLE IF EXISTS works
         ON DELETE SET NULL
         ON UPDATE CASCADE;
 
-DO $$
-    BEGIN
-        IF EXISTS(
-            SELECT 1 FROM information_schema.columns
-                WHERE table_schema = 'public'
-                  AND table_name = 'works'
-                  AND column_name = 'contract_id'
-        ) AND EXISTS(
-            SELECT 1 FROM information_schema.columns
-                WHERE table_schema = 'public'
-                  AND table_name = 'works'
-                  AND column_name = 'project_id'
-        ) THEN
-            UPDATE works SET association_contract_project_id = (
-                SELECT associations_contract_project.id
-                FROM associations_contract_project
-                WHERE associations_contract_project.contract_id = works.contract_id
-                    AND associations_contract_project.project_id = works.project_id
-            );
-        END IF;
-    END
-$$;
+UPDATE works SET association_contract_project_id = (
+    CASE WHEN EXISTS(
+        SELECT associations_contract_project.id
+        FROM associations_contract_project
+        WHERE associations_contract_project.contract_id = works.contract_id
+            AND associations_contract_project.project_id = works.project_id
+    ) THEN (
+        SELECT associations_contract_project.id
+        FROM associations_contract_project
+        WHERE associations_contract_project.contract_id = works.contract_id
+            AND associations_contract_project.project_id = works.project_id
+    ) END
+);
 
 ALTER TABLE IF EXISTS works
     DROP CONSTRAINT IF EXISTS work_contract_fk;
