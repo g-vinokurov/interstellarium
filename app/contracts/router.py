@@ -191,18 +191,13 @@ def api_contracts_get_one(
         Work.cost,
     )
     query = query.join(
-        AssociationContractProject,
-        AssociationContractProject.id == Work.association_contract_project_id,
-        isouter=False
-    )
-    query = query.join(
         Contract,
-        Contract.id == AssociationContractProject.contract_id,
+        Contract.id == Work.contract_id,
         isouter=False
     )
     query = query.join(
         Project,
-        Project.id == AssociationContractProject.project_id,
+        Project.id == Work.project_id,
         isouter=False
     )
     query = query.where(Contract.id == contract_id)
