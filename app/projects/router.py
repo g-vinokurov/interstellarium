@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
@@ -10,6 +10,7 @@ from sqlalchemy import select
 from app.db import db
 from app.models import User, Group, Project, Contract, Work
 from app.models import AssociationContractProject
+from app.models import AssignmentUserProject
 
 from app.auth import get_current_user
 from app.projects import schema
@@ -274,10 +275,29 @@ def api_projects_update_chief(
             {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
         )
 
+    if project.chief_id is not None:
+        unassignment = AssignmentUserProject()
+        unassignment.project_id = project.id
+        unassignment.user_id = project.chief_id
+        unassignment.assignment_date = datetime.utcnow().date()
+        unassignment.is_assigned = False
+
+        session.add(unassignment)
+        session.commit()
+
     if chief is None:
         project.chief_id = None
     else:
         project.chief_id = chief.id
+
+    if project.chief_id is not None:
+        assignment = AssignmentUserProject()
+        assignment.project_id = project.id
+        assignment.user_id = project.chief_id
+        assignment.assignment_date = datetime.utcnow().date()
+        assignment.is_assigned = True
+
+        session.add(assignment)
 
     session.commit()
     return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
