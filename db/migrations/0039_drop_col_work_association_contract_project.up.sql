@@ -68,9 +68,8 @@ DO $$ BEGIN
             FROM associations_contract_project
             WHERE associations_contract_project.id = works.association_contract_project_id
         );
+        ALTER TABLE IF EXISTS works
+            DROP CONSTRAINT IF EXISTS work_association_contract_project_fk,
+            DROP COLUMN IF EXISTS association_contract_project_id;
     END IF ;
 END $$ ;
-
-ALTER TABLE IF EXISTS works
-    DROP CONSTRAINT IF EXISTS work_association_contract_project_fk,
-    DROP COLUMN IF EXISTS association_contract_project_id;
