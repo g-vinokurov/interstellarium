@@ -1,3 +1,8 @@
 ALTER TABLE IF EXISTS works
-    DROP CONSTRAINT IF EXISTS work_association_contract_project_fk,
-    DROP COLUMN IF EXISTS association_contract_project_id;
+    DROP CONSTRAINT IF EXISTS work_contract_fk;
+ALTER TABLE IF EXISTS works
+    DROP CONSTRAINT IF EXISTS work_project_fk;
+ALTER TABLE IF EXISTS works
+    DROP COLUMN IF EXISTS contract_id;
+ALTER TABLE IF EXISTS works
+    DROP COLUMN IF EXISTS project_id;
