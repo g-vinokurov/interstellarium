@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Optional
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
@@ -233,3 +234,107 @@ def api_equipment_get_one(
         'groups_assignments': groups_assignments
     }
     return JSONResponse(response, status.HTTP_200_OK)
+
+
+@router.put('/api/equipment/{id}/department', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_equipment_update_department(
+    id: int,
+    request: schema.DepartmentID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    equipment = session.query(Equipment).get(id)
+    department = session.query(Department).get(request.id)
+
+    if equipment is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    if equipment.department_id is not None:
+        unassignment = AssignmentEquipmentDepartment()
+        unassignment.equipment_id = equipment.id
+        unassignment.department_id = equipment.department_id
+        unassignment.assignment_date = datetime.utcnow().date()
+        unassignment.is_assigned = False
+        session.add(unassignment)
+        session.commit()
+
+    if department is None:
+        equipment.department_id = None
+    else:
+        equipment.department_id = department.id
+
+    assignment = AssignmentEquipmentDepartment()
+    assignment.equipment_id = equipment.id
+    assignment.department_id = equipment.department_id
+    assignment.assignment_date = datetime.utcnow().date()
+    assignment.is_assigned = True
+
+    session.add(assignment)
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/equipment/{id}/group', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_equipment_update_group(
+    id: int,
+    request: schema.GroupID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    equipment = session.query(Equipment).get(id)
+    group = session.query(Group).get(request.id)
+
+    if equipment is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    if equipment.group_id is not None:
+        unassignment = AssignmentEquipmentGroup()
+        unassignment.equipment_id = equipment.id
+        unassignment.group_id = equipment.group_id
+        unassignment.assignment_date = datetime.utcnow().date()
+        unassignment.is_assigned = False
+        session.add(unassignment)
+        session.commit()
+
+    if group is None:
+        equipment.group_id = None
+    else:
+        equipment.group_id = group.id
+
+    assignment = AssignmentEquipmentGroup()
+    assignment.equipment_id = equipment.id
+    assignment.group_id = equipment.group_id
+    assignment.assignment_date = datetime.utcnow().date()
+    assignment.is_assigned = True
+
+    session.add(assignment)
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
