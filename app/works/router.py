@@ -8,7 +8,6 @@ from sqlalchemy import select
 
 from app.db import db
 from app.models import User, Work, Contract, Project, Group
-from app.models import AssociationContractProject
 
 from app.auth import get_current_user
 from app.works import schema
@@ -34,18 +33,13 @@ def api_works_get_all(
         Project.name
     )
     query = query.join(
-        AssociationContractProject,
-        AssociationContractProject.id == Work.association_contract_project_id,
-        isouter=True
-    )
-    query = query.join(
         Contract,
-        Contract.id == AssociationContractProject.contract_id,
+        Contract.id == Work.contract_id,
         isouter=True
     )
     query = query.join(
         Project,
-        Project.id == AssociationContractProject.project_id,
+        Project.id == Work.project_id,
         isouter=True
     )
     if name is not None and len(name) != 0:
@@ -139,18 +133,13 @@ def api_works_get_one(
         Group.name
     )
     query = query.join(
-        AssociationContractProject,
-        AssociationContractProject.id == Work.association_contract_project_id,
-        isouter=True
-    )
-    query = query.join(
         Contract,
-        Contract.id == AssociationContractProject.contract_id,
+        Contract.id == Work.contract_id,
         isouter=True
     )
     query = query.join(
         Project,
-        Project.id == AssociationContractProject.project_id,
+        Project.id == Work.project_id,
         isouter=True
     )
     query = query.join(

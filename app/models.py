@@ -243,18 +243,26 @@ class Work(Base):
     name = Column(String(512), nullable=True)
     cost = Column(Double, nullable=False, default=0.0)
 
-    association_contract_project_id = Column(Integer, nullable=True)
+    contract_id = Column(Integer, nullable=True)
+    project_id = Column(Integer, nullable=True)
 
     executor_id = Column(Integer, nullable=True)
 
     __table_args__ = (
         PrimaryKeyConstraint('id', name='work_pk'),
         ForeignKeyConstraint(
-            ['association_contract_project_id'],
-            ['associations_contract_project.id'],
+            ['contract_id'],
+            ['contracts.id'],
             ondelete='SET NULL',
             onupdate='CASCADE',
-            name='work_association_contract_project_fk'
+            name='work_contract_fk'
+        ),
+        ForeignKeyConstraint(
+            ['project_id'],
+            ['projects.id'],
+            ondelete='SET NULL',
+            onupdate='CASCADE',
+            name='work_project_fk'
         ),
         ForeignKeyConstraint(
             ['executor_id'],
