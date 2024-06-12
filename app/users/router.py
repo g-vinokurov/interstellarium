@@ -254,3 +254,18 @@ def api_users_get_one(
         'contracts_assignments': contracts_assignments
     }
     return JSONResponse(response, status.HTTP_200_OK)
+
+
+@router.put('/api/users/{id}/department', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_users_update_department(
+    id: int,
+    department: schema.ID,
+    current_user: User = Depends(get_current_user)
+):
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
