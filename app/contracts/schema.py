@@ -66,6 +66,9 @@ class ContractProfile(BaseModel):
     name: Optional[str] = None
     start_date: Optional[str] = None
     finish_date: Optional[str] = None
+    effectivity: float
+    works_total_cost: float
+    users_number: int
     chief: Chief
     group: Group
     projects: list[Project]

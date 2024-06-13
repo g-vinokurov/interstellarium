@@ -11,6 +11,7 @@ from app.db import db
 from app.models import User, Group, Contract, Project, Work
 from app.models import AssociationContractProject
 from app.models import AssignmentUserContract
+from app.models import AssociationUserGroup
 
 from app.auth import get_current_user
 from app.contracts import schema
@@ -206,6 +207,39 @@ def api_contracts_get_one(
     with db.Session() as session:
         works_data = session.execute(query).all()
 
+    query = select(
+        User.id
+    )
+    query = query.join(
+        AssociationUserGroup,
+        AssociationUserGroup.user_id == User.id,
+        isouter=False
+    )
+    query = query.join(
+        Group,
+        Group.id == AssociationUserGroup.group_id,
+        isouter=False
+    )
+    query = query.join(
+        Project,
+        Project.group_id == Group.id,
+        isouter=False
+    )
+    query = query.join(
+        AssociationContractProject,
+        AssociationContractProject.project_id == Project.id,
+        isouter=False
+    )
+    query = query.join(
+        Contract,
+        Contract.id == AssociationContractProject.contract_id,
+        isouter=False
+    )
+    query = query.where(Contract.id == contract_id)
+
+    with db.Session() as session:
+        users_data = session.execute(query).all()
+
     projects = []
     for row in projects_data:
         item = {
@@ -228,11 +262,18 @@ def api_contracts_get_one(
     if contract_finish_date is not None:
         contract_finish_date = str(contract_finish_date)
 
+    users_number = max(len(users_data), 1)
+    works_total_cost = sum(x['cost'] for x in works)
+    effectivity = works_total_cost / users_number
+
     response = {
         'id': contract_id,
         'name': contract_name,
         'start_date': contract_start_date,
         'finish_date': contract_finish_date,
+        'effectivity': effectivity,
+        'works_total_cost': works_total_cost,
+        'users_number': users_number,
         'chief': {
             'id': chief_id,
             'name': chief_name
