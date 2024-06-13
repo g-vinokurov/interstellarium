@@ -22,7 +22,7 @@ class GroupID(BaseModel):
 
 
 class ProjectID(BaseModel):
-    id: int
+    id: Optional[int]
 
 
 class Chief(BaseModel):

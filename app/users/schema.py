@@ -17,6 +17,10 @@ class DepartmentID(BaseModel):
     id: Optional[int] = None
 
 
+class GroupID(BaseModel):
+    id: Optional[int] = None
+
+
 class Group(BaseModel):
     id: Optional[int] = None
     name: Optional[str] = None

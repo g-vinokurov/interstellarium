@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
@@ -240,6 +240,9 @@ def api_users_get_one(
     if user_birthdate is not None:
         user_birthdate = str(user_birthdate)
 
+    contracts_assignments.sort(key=lambda x: x['id'], reverse=True)
+    projects_assignments.sort(key=lambda x: x['id'], reverse=True)
+
     response = {
         'id': user_id,
         'name': user_name,
@@ -288,5 +291,80 @@ def api_users_update_department(
     else:
         user.department_id = department.id
 
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/users/{id}/groups', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_users_update_department(
+    id: int,
+    request: schema.GroupID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    user = session.query(User).get(id)
+    group = session.query(Group).get(request.id)
+
+    if user is None or group is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    association = session.query(AssociationUserGroup).filter_by(
+        user_id=user.id, group_id=group.id
+    ).first()
+
+    if association is not None:
+        return JSONResponse(
+            {'msg': 'item exists'}, status.HTTP_400_BAD_REQUEST
+        )
+
+    association = AssociationUserGroup()
+    association.user_id = user.id
+    association.group_id = group.id
+    session.add(association)
+    session.commit()
+
+    projects = session.query(Project).filter(
+        Project.group_id == group.id
+    ).all()
+    contracts = session.query(Contract).filter(
+        Contract.group_id == group.id
+    ).all()
+
+    assignments = []
+    for contract in contracts:
+        assignment = AssignmentUserContract()
+        assignment.user_id = user.id
+        assignment.contract_id = contract.id
+        assignment.assignment_date = datetime.utcnow().date()
+        assignment.is_assigned = True
+        assignments.append(assignment)
+
+    session.add_all(assignments)
+    session.commit()
+
+    assignments = []
+    for project in projects:
+        assignment = AssignmentUserProject()
+        assignment.user_id = user.id
+        assignment.project_id = project.id
+        assignment.assignment_date = datetime.utcnow().date()
+        assignment.is_assigned = True
+        assignments.append(assignment)
+
+    session.add_all(assignments)
     session.commit()
     return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
