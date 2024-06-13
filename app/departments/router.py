@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Optional
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
@@ -8,6 +9,7 @@ from sqlalchemy import select
 
 from app.db import db
 from app.models import User, Department, Equipment
+from app.models import AssignmentEquipmentDepartment
 
 from app.auth import get_current_user
 from app.departments import schema
@@ -205,6 +207,89 @@ def api_departments_update_chief(
         department.chief_id = None
     else:
         department.chief_id = chief.id
+
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/departments/{id}/equipment', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_departments_update_equipment(
+    id: int,
+    request: schema.EquipmentID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    department = session.query(Department).get(id)
+    equipment = session.query(Equipment).get(request.id)
+
+    if department is None or equipment is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    if equipment.department_id is not None:
+        unassignment = AssignmentEquipmentDepartment()
+        unassignment.equipment_id = equipment.id
+        unassignment.department_id = equipment.department_id
+        unassignment.assignment_date = datetime.utcnow().date()
+        unassignment.is_assigned = False
+
+        session.add(unassignment)
+        session.commit()
+
+    equipment.department_id = department.id
+
+    assignment = AssignmentEquipmentDepartment()
+    assignment.equipment_id = equipment.id
+    assignment.department_id = equipment.department_id
+    assignment.assignment_date = datetime.utcnow().date()
+    assignment.is_assigned = True
+
+    session.add(assignment)
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/departments/{id}/users', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_departments_update_users(
+    id: int,
+    request: schema.UserID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    department = session.query(Department).get(id)
+    user = session.query(User).get(request.id)
+
+    if department is None or user is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    user.department_id = department.id
 
     session.commit()
     return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)

@@ -16,6 +16,10 @@ class UserID(BaseModel):
     id: Optional[int] = None
 
 
+class EquipmentID(BaseModel):
+    id: Optional[int] = None
+
+
 class User(BaseModel):
     id: int
     name: Optional[str] = None
