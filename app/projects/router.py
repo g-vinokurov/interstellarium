@@ -194,12 +194,12 @@ def api_projects_get_one(
     query = query.join(
         Project,
         Project.id == Work.project_id,
-        isouter=False
+        isouter=True
     )
     query = query.join(
         Contract,
         Contract.id == Work.contract_id,
-        isouter=False
+        isouter=True
     )
     query = query.where(Project.id == project_id)
 

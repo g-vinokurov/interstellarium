@@ -21,6 +21,10 @@ class GroupID(BaseModel):
     id: Optional[int] = None
 
 
+class ProjectID(BaseModel):
+    id: int
+
+
 class Chief(BaseModel):
     id: Optional[int] = None
     name: Optional[str] = None
