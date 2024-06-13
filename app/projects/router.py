@@ -337,3 +337,48 @@ def api_projects_update_group(
 
     session.commit()
     return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
+
+
+@router.put('/api/projects/{id}/contracts', status_code=status.HTTP_200_OK, responses={
+    200: {'model': schema.OkResponse},
+    400: {'model': schema.BadRequestError},
+    401: {'model': schema.UnauthorizedError},
+    403: {'model': schema.ForbiddenError},
+    404: {'model': schema.NotFoundError}
+})
+def api_projects_update_contracts(
+    id: int,
+    request: schema.ContractID,
+    current_user: User = Depends(get_current_user)
+):
+    if not current_user.is_admin and not current_user.is_superuser:
+        return JSONResponse(
+            {'msg': 'access denied'}, status.HTTP_403_FORBIDDEN
+        )
+
+    session = db.Session()
+
+    project = session.query(Project).get(id)
+    contract = session.query(Contract).get(request.id)
+
+    if project is None or contract is None:
+        return JSONResponse(
+            {'msg': 'item not found'}, status.HTTP_404_NOT_FOUND
+        )
+
+    association = session.query(AssociationContractProject).filter_by(
+        contract_id=contract.id, project_id=project.id
+    ).first()
+
+    if association is not None:
+        return JSONResponse(
+            {'msg': 'item exists'}, status.HTTP_400_BAD_REQUEST
+        )
+
+    association = AssociationContractProject()
+    association.contract_id = contract.id
+    association.project_id = project.id
+    session.add(association)
+
+    session.commit()
+    return JSONResponse({'msg': 'ok'}, status.HTTP_200_OK)
