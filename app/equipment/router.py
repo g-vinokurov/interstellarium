@@ -219,6 +219,9 @@ def api_equipment_get_one(
         }
         groups_assignments.append(item)
 
+    departments_assignments.sort(key=lambda x: x['id'], reverse=True)
+    groups_assignments.sort(key=lambda x: x['id'], reverse=True)
+
     response = {
         'id': equipment_id,
         'name': equipment_name,
